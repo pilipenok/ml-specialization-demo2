@@ -1,0 +1,38 @@
+.new-dataset {
+padding: 0 0 0 50px;
+    max-width: 800px;
+    padding-top: 40px;
+}
+
+h1 {
+  font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+      font-size: 13pt;
+    font-weight: normal;
+    color: rgba(0,0,0,.54);
+        margin: 0 0 10px 10px;
+}
+
+.card {
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.2);
+  background: white;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+

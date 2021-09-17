@@ -1,3 +1,7 @@
+.login {
+  text-align: -webkit-center;
+}
+
 mat-card {
   max-width: 600px;
   margin: 100px;

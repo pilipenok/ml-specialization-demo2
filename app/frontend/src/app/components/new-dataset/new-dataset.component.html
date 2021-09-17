@@ -1,1 +1,50 @@
-<p>new-dataset works!</p>
+
+<div class="new-dataset">
+<div>
+  <h1>New dataset</h1>
+</div>
+<div class="card">
+<mat-stepper orientation="vertical">
+  <mat-step>
+    <ng-template matStepLabel>Step 1</ng-template>
+    <ng-template matStepContent>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="my dataset">
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Description (optional)</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+      <br/>
+      <button mat-button matStepperNext>Next</button>
+    </ng-template>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Step 2</ng-template>
+    <ng-template matStepContent>
+      <p></p>
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>File location</mat-label>
+        <input matInput type="text">
+        <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <br/>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </ng-template>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Step 3</ng-template>
+    <p>You can now start the training</p>
+    <button mat-raised-button color="primary">Generate ML-model</button>
+    <br/>
+    <br/>
+    <button mat-button matStepperPrevious>Back</button>
+  </mat-step>
+</mat-stepper>
+</div>
+</div>

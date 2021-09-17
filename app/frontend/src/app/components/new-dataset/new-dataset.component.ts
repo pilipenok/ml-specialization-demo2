@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewDatasetComponent implements OnInit {
 
+value = "Clear Me"
+
   constructor() { }
 
   ngOnInit(): void {
