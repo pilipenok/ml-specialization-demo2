@@ -9,6 +9,12 @@ import { NewDatasetComponent } from './components/new-dataset/new-dataset.compon
 import { LoginComponent } from './components/login/login.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { DatasetDetailsComponent } from './components/dataset-details/dataset-details.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -17,12 +23,20 @@ import { DatasetDetailsComponent } from './components/dataset-details/dataset-de
     NewDatasetComponent,
     LoginComponent,
     TopBarComponent,
-    DatasetDetailsComponent
+    DatasetDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

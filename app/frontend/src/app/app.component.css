@@ -1,0 +1,8 @@
+.page {
+  background: #fafafa;
+  height: -webkit-fill-available;
+}
+
+.container {
+  text-align: -webkit-center;
+}
