@@ -1,7 +1,12 @@
 .new-dataset {
 padding: 0 0 0 50px;
-    max-width: 800px;
+    text-align: -webkit-center;
     padding-top: 40px;
+}
+
+.new-dataset > div {
+max-width: 800px;
+    text-align: justify;
 }
 
 h1 {
@@ -34,5 +39,9 @@ h1 {
 
 .mat-form-field {
   margin-top: 16px;
+}
+
+.cancel-btn {
+  margin-top: 50px;
 }
 
