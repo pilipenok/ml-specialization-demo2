@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "or2--epm-gcp-by-meetup2-t1iylu": {
+      "hosting": {
+        "frontend": [
+          "or2--epm-gcp-by-meetup2-t1iylu"
+        ]
+      }
+    }
+  }
+}
