@@ -13,3 +13,8 @@ a {
   font-weight: 500;
   text-decoration: none;
 }
+
+.sign-out-btn-container {
+  float: right;
+  color: white;
+}

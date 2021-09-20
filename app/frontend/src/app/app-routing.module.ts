@@ -4,11 +4,12 @@ import { DatasetListComponent } from './components/dataset-list/dataset-list.com
 import { DatasetDetailsComponent } from './components/dataset-details/dataset-details.component';
 import { NewDatasetComponent } from './components/new-dataset/new-dataset.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
-      {path: '', component: DatasetListComponent},
-      {path: 'dataset/:datasetId', component: DatasetDetailsComponent},
-      {path: 'new-dataset', component: NewDatasetComponent},
+      {path: '', component: DatasetListComponent, canActivate: [AuthGuard]},
+      {path: 'dataset/:datasetId', component: DatasetDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'new-dataset', component: NewDatasetComponent, canActivate: [AuthGuard]},
       {path: 'login', component: LoginComponent}
 ];
 

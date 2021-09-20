@@ -1,11 +1,7 @@
-<div class="top-bar-container"
-    
-    [class.mat-elevation-z6]="isActive">
-  
-  <a routerLink="/">
-  Black Friday Demo
-</a>
- 
+<div class="top-bar-container" [class.mat-elevation-z6]="isActive">
+  <a routerLink="/">Black Friday Demo</a>
+
+  <div class="sign-out-btn-container">
+    <button mat-button (click)="signOut()">Sign Out</button>
+  </div>
 </div>
-
-
