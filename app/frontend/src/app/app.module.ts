@@ -19,10 +19,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 import { environment } from '../environments/environment';
 
@@ -39,19 +41,21 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
     MatStepperModule,
+    MatProgressBarModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -25,14 +25,14 @@
           <ng-template matStepLabel>Step 2</ng-template>
           <ng-template matStepContent>
             <p></p>
-            <mat-form-field class="form-field" appearance="fill">
-              <mat-label>File location</mat-label>
-              <input matInput type="text">
-              <button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
-            <br/>
+            <mat-label>File location</mat-label>
+            <div class="file-input-container">
+              <div #filePath class="file-path"></div>
+              <input class="hide" #fileInput type="file" (change)="filePath.innerHTML=fileInput.value; setFile($event)" accept=".csv"/>
+              <button mat-flat-button color="primary" (click)="fileInput.click()">Choose File (CSV)</button>
+              <button mat-flat-button color="primary" (click)="uploadFile()">Upload</button>
+              <mat-progress-bar mode="determinate" [value]="uploadPercent | async"></mat-progress-bar>
+            </div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
           </ng-template>
@@ -44,6 +44,14 @@
           <br/>
           <br/>
           <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <p>Model training is going to be ready in about 3 hours</p>
+          <a routerLink="/">
+            <button mat-raised-button color="primary">To the list</button>
+          </a>
         </mat-step>
       </mat-stepper>
     </div>

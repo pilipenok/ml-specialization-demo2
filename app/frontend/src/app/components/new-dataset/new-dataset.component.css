@@ -45,3 +45,23 @@ h1 {
   margin-top: 50px;
 }
 
+.hide {
+  display: none;
+}
+
+.file-input-container {
+  padding: 20px 0;
+}
+
+.file-input-container > button {
+  margin-right: 20px;
+}
+
+.file-input-container mat-progress-bar {
+  padding-top: 10px;
+}
+
+.file-path {
+  padding-bottom: 10px;
+  font-family: monospace;
+}
