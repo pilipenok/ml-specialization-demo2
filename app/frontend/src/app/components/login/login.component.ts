@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 @Component({

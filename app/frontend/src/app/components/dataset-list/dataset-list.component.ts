@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
+import { Observable } from 'rxjs';
 
-import {datasets} from '../../datasets';
 
 @Component({
   selector: 'app-dataset-list',
   templateUrl: './dataset-list.component.html',
   styleUrls: ['./dataset-list.component.css']
 })
-export class DatasetListComponent implements OnInit {
+export class DatasetListComponent {
 
-  constructor() { }
+  datasets : Observable<Dataset[]>;
 
-  ngOnInit(): void {
+  constructor(private dao : DatasetDaoService) { 
+    this.datasets = dao.getDatasets();
   }
   
-  datasets = datasets;
-
-  displayedColumns: string[] = ['name', 'description', 'size', 'status', 'createdDate', 'createdUser', 'actions'];
-
+  displayedColumns: string[] = ['name' , 'description', 'status', 'actions'];
 }
+
