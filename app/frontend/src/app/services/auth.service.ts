@@ -33,4 +33,8 @@ export class AuthService {
     this.auth.signOut();
     this.router.navigateByUrl("/login");
   }
+  
+  getUserId(): string | null {
+    return this.userData ? this.userData.uid : null;
+  }
 }
