@@ -21,14 +21,15 @@ export class DatasetDaoService {
     return this.items;
   }
   
-  createDataset(id: string, name: string, description: string) {
+  createDataset(id: string, name: string, description: string, filename: string, type: string, size: number) {
     let newDataset = {
       id: id,
       user_id: this.auth.getUserId(),
       name: name,
       description: description,
       status: 0,
-      creation_timestamp: new Date()
+      creation_timestamp: new Date(),
+      meta_data: { name: filename, type: type, size: size }
     };
     this.itemsCollection.add(newDataset);
   }
@@ -44,4 +45,12 @@ export interface Dataset {
   description: string;
   status: number;
   creation_timestamp: Date;
+  meta_data: FileMetaData;
 }
+
+export interface FileMetaData {
+  name: string;
+  type: string;
+  size: number;
+}
+

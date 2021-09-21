@@ -17,6 +17,6 @@ export class DatasetListComponent {
     this.datasets = dao.getDatasets();
   }
   
-  displayedColumns: string[] = ['name' , 'description', 'status', 'actions'];
+  displayedColumns: string[] = ['name' , 'description', 'filename', 'type', 'size', 'creation_timestamp', 'status', 'actions'];
 }
 

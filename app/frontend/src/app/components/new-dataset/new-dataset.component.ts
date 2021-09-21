@@ -30,7 +30,13 @@ export class NewDatasetComponent {
   
   onSubmit() {
     if (this.name.errors == null && this.description.errors == null) {
-      this.dao.createDataset(this.datasetId, this.name.value, this.description.value);
+      this.dao.createDataset(
+                  this.datasetId,
+                  this.name.value,
+                  this.description.value,
+                  this.files[0].name,
+                  this.files[0].type,
+                  this.files[0].size);
     }
   }
 
