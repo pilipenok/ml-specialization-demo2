@@ -1,0 +1,52 @@
+h3 {
+  font-size: 20px;
+  color: rgba(0,0,0,.87);
+  font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  
+  float: left;
+}
+
+.status {
+  font-size: 14px;
+  font-style: italic;
+  color: darkorange;
+      float: right;
+      margin-top: 25px;
+}
+
+mat-tab-group {
+  margin-top: 20px;
+  padding-bottom: 50px;
+  background-color: white;
+  clear: left;
+}
+
+.desc {
+  font-size: 16px;
+    line-height: 28px;
+}
+
+.dataset-details-content {
+  padding: 0 50px;
+}
+
+.file-metadata {
+  font-size: 13px;
+  border-collapse: collapse;
+  margin-left: 20px;
+  margin-top: 30px;
+  width: 50%;
+}
+
+.file-metadata td {
+  border: 1px solid rgba(0,0,0,.12);
+  font-weight: 400;
+  padding: 8px 16px;
+}
+
+.file-metadata td:nth-child(1) {
+  font-family: Roboto Mono,monospace;
+  font-size: 90%;
+  width: 100px;
+}
+

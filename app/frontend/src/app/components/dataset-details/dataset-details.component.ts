@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-dataset-details',
@@ -6,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dataset-details.component.css']
 })
 export class DatasetDetailsComponent implements OnInit {
+
+  mlDisabled: boolean = false;
 
   constructor() { }
 

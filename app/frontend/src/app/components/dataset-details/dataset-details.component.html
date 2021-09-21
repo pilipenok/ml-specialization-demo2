@@ -1,1 +1,17 @@
-<p>dataset-details works!</p>
+<div class="dataset-details-content">
+  <h3>Dataset 1</h3>
+  <div class="status">In progress</div>
+  <mat-tab-group mat-align-tabs="start" class="mat-elevation-z8">
+    <mat-tab label="Details">
+      <mat-card>
+        <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <table class="file-metadata">
+          <tr><td>File:</td><td>my-dataset-2020.csv</td></tr>
+          <tr><td>Type:</td><td>text/csv</td></tr>
+          <tr><td>Size:</td><td>20 Mb</td></tr>
+        </table>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="ML API" [disabled]="mlDisabled">Yes</mat-tab>
+  </mat-tab-group>
+</div>
