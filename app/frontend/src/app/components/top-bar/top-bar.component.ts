@@ -9,12 +9,10 @@ import { Router } from '@angular/router';
 })
 export class TopBarComponent {
 
-  isActive = true;
-
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(public auth: AuthService, private router: Router) { }
   
   signOut() {
-    this.authService.signOut();
+    this.auth.signOut();
     this.router.navigateByUrl("/login");
   }
 }

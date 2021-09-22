@@ -1,7 +1,10 @@
-<div class="top-bar-container" [class.mat-elevation-z6]="isActive">
+<div class="top-bar-container">
+
+  <mat-icon>api</mat-icon>
+
   <a routerLink="/">Black Friday Demo</a>
 
-  <div class="sign-out-btn-container">
+  <div class="sign-out-btn-container" *ngIf="auth.isSignedIn()">
     <button mat-button (click)="signOut()">Sign Out</button>
   </div>
 </div>
