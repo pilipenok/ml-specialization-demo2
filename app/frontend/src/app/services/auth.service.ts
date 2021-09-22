@@ -19,18 +19,19 @@ export class AuthService {
   
   signIn(email: string, password: string) {
     this.auth.signInWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then((userCredential) => {
+        this.userData = userCredential.user;
         this.router.navigateByUrl("/");
       });
   }
   
   isSignedIn() {
-    console.log(this.userData != null);
     return this.userData != null;
   }
   
   signOut() {
     this.auth.signOut();
+    this.userData = null;
     this.router.navigateByUrl("/login");
   }
   
