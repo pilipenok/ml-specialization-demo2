@@ -9,14 +9,16 @@ import { Observable } from 'rxjs';
   templateUrl: './dataset-list.component.html',
   styleUrls: ['./dataset-list.component.css']
 })
-export class DatasetListComponent {
+export class DatasetListComponent implements OnInit {
 
-  datasets : Observable<Dataset[]>;
+  displayedColumns: string[] = ['name' , 'description', 'filename', 'type', 'size',
+                                'creation_timestamp', 'status', 'actions'];
 
-  constructor(private dao : DatasetDaoService) { 
-    this.datasets = dao.getDatasets();
+  datasets!: Observable<Dataset[]>;
+
+  constructor(private dao : DatasetDaoService) {  }
+
+  ngOnInit(): void {
+    this.datasets = this.dao.getDatasets();
   }
-  
-  displayedColumns: string[] = ['name' , 'description', 'filename', 'type', 'size', 'creation_timestamp', 'status', 'actions'];
 }
-

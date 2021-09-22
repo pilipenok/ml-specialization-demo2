@@ -1,17 +1,19 @@
 <div class="dataset-details-content">
-  <h3>Dataset 1</h3>
-  <div class="status">In progress</div>
+  <h3>{{ (item | async)?.name }}</h3>
+  <div class="status in-progress" *ngIf="(item | async)?.status == 1">Training in progress</div>
+  <div class="status ready" *ngIf="(item | async)?.status == 2">Training complete</div>
+  <div class="status error" *ngIf="(item | async)?.status == -1">Error</div>
   <mat-tab-group mat-align-tabs="start" class="mat-elevation-z8">
     <mat-tab label="Details">
       <mat-card>
-        <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p class="desc">{{ (item | async)?.description }}</p>
         <table class="file-metadata">
-          <tr><td>File:</td><td>my-dataset-2020.csv</td></tr>
-          <tr><td>Type:</td><td>text/csv</td></tr>
-          <tr><td>Size:</td><td>20 Mb</td></tr>
+          <tr><td>File:</td><td>{{ (item | async)?.file_name }}</td></tr>
+          <tr><td>Type:</td><td>{{ (item | async)?.file_type }}</td></tr>
+          <tr><td>Size:</td><td>{{ ((item | async)?.file_size || 0) / 1000 / 1024 | number }} Mb</td></tr>
         </table>
       </mat-card>
     </mat-tab>
-    <mat-tab label="ML API" [disabled]="mlDisabled">Yes</mat-tab>
+    <mat-tab label="ML API" [disabled]="(item | async)?.status != 2"></mat-tab>
   </mat-tab-group>
 </div>

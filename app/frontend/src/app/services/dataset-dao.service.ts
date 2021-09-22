@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -10,32 +10,37 @@ import { AuthService } from './auth.service';
 export class DatasetDaoService {
 
   private itemsCollection: AngularFirestoreCollection<Dataset>;
-  private items: Observable<Dataset[]>;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) {
     this.itemsCollection = afs.collection<Dataset>('datasets');
-    this.items = this.itemsCollection.valueChanges();
   }
   
   getDatasets() {
-    return this.items;
+    return this.itemsCollection.valueChanges();
   }
   
-  createDataset(id: string, name: string, description: string, filename: string, type: string, size: number) {
+  createDataset(id: string, name: string, description: string,
+                filename: string, type: string, size: number) {
     let newDataset = {
       id: id,
       user_id: this.auth.getUserId(),
       name: name,
       description: description,
-      status: 0,
+      status: 1,
       creation_timestamp: new Date(),
-      meta_data: { name: filename, type: type, size: size }
+      file_name: filename,
+      file_type: type,
+      file_size: size
     };
-    this.itemsCollection.add(newDataset);
+    this.itemsCollection.doc(id).set(newDataset);
   }
   
   generateId(): string {
     return this.afs.createId();
+  }
+
+  getDataset(datasetId: string): Observable<Dataset | undefined> {
+    return this.itemsCollection.doc(datasetId).valueChanges();
   }
 }
 
@@ -45,12 +50,7 @@ export interface Dataset {
   description: string;
   status: number;
   creation_timestamp: Date;
-  meta_data: FileMetaData;
+  file_name: string;
+  file_type: string;
+  file_size: number;
 }
-
-export interface FileMetaData {
-  name: string;
-  type: string;
-  size: number;
-}
-

@@ -2,16 +2,28 @@ h3 {
   font-size: 20px;
   color: rgba(0,0,0,.87);
   font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
-  
   float: left;
 }
 
 .status {
   font-size: 14px;
+  float: right;
+  margin-top: 25px;
+}
+
+.status.in-progress {
   font-style: italic;
   color: darkorange;
-      float: right;
-      margin-top: 25px;
+}
+
+.status.ready {
+  color: #46a35e;
+  font-weight: bold;
+}
+
+.status.error {
+  color: #f44336;
+  font-weight: bold;
 }
 
 mat-tab-group {
@@ -23,7 +35,7 @@ mat-tab-group {
 
 .desc {
   font-size: 16px;
-    line-height: 28px;
+  line-height: 28px;
 }
 
 .dataset-details-content {
