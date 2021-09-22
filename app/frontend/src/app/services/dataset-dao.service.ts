@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -9,14 +9,10 @@ import { AuthService } from './auth.service';
 })
 export class DatasetDaoService {
 
-  private itemsCollection: AngularFirestoreCollection<Dataset>;
-
-  constructor(private afs: AngularFirestore, private auth: AuthService) {
-    this.itemsCollection = afs.collection<Dataset>('datasets');
-  }
+  constructor(private afs: AngularFirestore, private auth: AuthService) { }
   
   getDatasets() {
-    return this.itemsCollection.valueChanges();
+    return this.afs.collection<Dataset>('datasets').valueChanges();
   }
   
   createDataset(id: string, name: string, description: string,
@@ -32,15 +28,19 @@ export class DatasetDaoService {
       file_type: type,
       file_size: size
     };
-    this.itemsCollection.doc(id).set(newDataset);
+    this.afs.collection<Dataset>('datasets').doc(id).set(newDataset);
   }
   
   generateId(): string {
     return this.afs.createId();
   }
 
-  getDataset(datasetId: string): Observable<Dataset | undefined> {
-    return this.itemsCollection.doc(datasetId).valueChanges();
+  getDataset(id: string): Observable<Dataset | undefined> {
+    return this.afs.doc<Dataset>('datasets/' + id).valueChanges();
+  }
+
+  deleteDataset(id: string) {
+    this.afs.doc<Dataset>('datasets/' + id).delete();
   }
 }
 

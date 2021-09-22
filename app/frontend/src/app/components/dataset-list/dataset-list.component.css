@@ -21,3 +21,18 @@ h1 {
 .paginator {
   background: #fafafa;
 }
+
+.status.in-progress {
+  font-style: italic;
+  color: darkorange;
+}
+
+.status.ready {
+  color: #46a35e;
+  font-weight: bold;
+}
+
+.status.error {
+  color: #f44336;
+  font-weight: bold;
+}
