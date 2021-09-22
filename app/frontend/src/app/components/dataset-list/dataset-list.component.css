@@ -3,7 +3,9 @@ h1 {
   font-size: 13pt;
   font-weight: normal;
   color: rgba(0,0,0,.54);
-  margin: 0 0 10px 10px;
+  margin: 30px 0 0 10px;
+  display: block;
+  float: left;
 }
 
 .dataset-list {
@@ -15,7 +17,9 @@ h1 {
 }
 
 .add-btn-container {
-  text-align: right;
+  display: block;
+  float: right;
+  margin-bottom: 10px;
 }
 
 .paginator {
@@ -36,3 +40,4 @@ h1 {
   color: #f44336;
   font-weight: bold;
 }
+
