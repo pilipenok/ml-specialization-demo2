@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -17,17 +17,24 @@ import { AuthService } from './auth.service';
 })
 export class DatasetDaoService {
 
-  constructor(private afs: AngularFirestore, private auth: AuthService) { }
+  private userDoc: AngularFirestoreDocument;
+  private datasetsCollection: AngularFirestoreCollection<Dataset>;
+
+  constructor(private afs: AngularFirestore, private auth: AuthService) {
+    this.userDoc = this.afs.doc<Dataset>('users/' + auth.getUserId());
+    this.datasetsCollection = this.userDoc.collection<Dataset>('datasets');
+  }
   
   getDatasets() {
-    return this.afs.collection<Dataset>('datasets').valueChanges();
+    return this.userDoc.collection<Dataset>('datasets',
+                                            ref => ref.orderBy('creation_timestamp', 'desc')
+                       ).valueChanges();
   }
   
   createDataset(id: string, name: string, description: string,
                 filename: string, type: string, size: number) {
-    let newDataset = {
+    let newDataset: Dataset = {
       id: id,
-      user_id: this.auth.getUserId(),
       name: name,
       description: description,
       status: 1,
@@ -36,7 +43,7 @@ export class DatasetDaoService {
       file_type: type,
       file_size: size
     };
-    this.afs.collection<Dataset>('datasets').doc(id).set(newDataset);
+    this.datasetsCollection.doc(id).set(newDataset);
   }
   
   generateId(): string {
@@ -44,11 +51,11 @@ export class DatasetDaoService {
   }
 
   getDataset(id: string): Observable<Dataset | undefined> {
-    return this.afs.doc<Dataset>('datasets/' + id).valueChanges();
+    return this.datasetsCollection.doc(id).valueChanges();
   }
 
   deleteDataset(id: string) {
-    this.afs.doc<Dataset>('datasets/' + id).delete();
+    this.datasetsCollection.doc(id).delete();
   }
 }
 

@@ -6,7 +6,7 @@
  * from EPAM Systems, Inc
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { DatasetDaoService } from '../../services/dataset-dao.service';
 import { StorageService } from '../../services/storage.service';
@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
   templateUrl: './new-dataset.component.html',
   styleUrls: ['./new-dataset.component.css']
 })
-export class NewDatasetComponent {
+export class NewDatasetComponent implements OnInit {
 
   value = "Clear Me";
   
@@ -32,8 +32,10 @@ export class NewDatasetComponent {
 
   constructor(private authService : AuthService,
               private dao : DatasetDaoService,
-              private storage : StorageService) {
-    this.datasetId = dao.generateId();
+              private storage : StorageService) { }
+
+  ngOnInit() {
+    this.datasetId = this.dao.generateId();
   }
   
   onSubmit() {

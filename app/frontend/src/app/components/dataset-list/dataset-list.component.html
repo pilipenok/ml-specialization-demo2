@@ -6,7 +6,6 @@
         <button mat-fab><mat-icon>add</mat-icon></button>
       </a>
     </div>
-
   </div>
   <table mat-table [dataSource]="datasets" class="mat-elevation-z8 wid100">
     <!-- Name Column -->
@@ -58,10 +57,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator [length]="100"
-           [pageSize]="10"
-           [pageSizeOptions]="[5, 10, 25, 100]"
-           aria-label="Select page"
-           class="paginator">
-  </mat-paginator>
 </div>
