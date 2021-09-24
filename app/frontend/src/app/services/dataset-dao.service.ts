@@ -13,20 +13,23 @@ import { AuthService } from './auth.service';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
 export class DatasetDaoService {
+
+  readonly USERS_COLLECTION_NAME = 'users';
+  readonly DATASET_COLLECTION_NAME = 'datasets';
 
   private userDoc: AngularFirestoreDocument;
   private datasetsCollection: AngularFirestoreCollection<Dataset>;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) {
-    this.userDoc = this.afs.doc<Dataset>('users/' + auth.getUserId());
-    this.datasetsCollection = this.userDoc.collection<Dataset>('datasets');
+    this.userDoc = this.afs.doc<Dataset>(this.USERS_COLLECTION_NAME + '/' + auth.getUserId());
+    this.datasetsCollection = this.userDoc.collection<Dataset>(this.DATASET_COLLECTION_NAME);
   }
   
   getDatasets() {
-    return this.userDoc.collection<Dataset>('datasets',
+    return this.userDoc.collection<Dataset>(this.DATASET_COLLECTION_NAME,
                                             ref => ref.orderBy('creation_timestamp', 'desc')
                        ).valueChanges();
   }

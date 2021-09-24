@@ -16,7 +16,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-dataset-details',
   templateUrl: './dataset-details.component.html',
-  styleUrls: ['./dataset-details.component.css']
+  styleUrls: ['./dataset-details.component.css'],
+  providers: [ DatasetDaoService ]
 })
 export class DatasetDetailsComponent implements OnInit {
 

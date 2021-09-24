@@ -16,7 +16,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-dataset-list',
   templateUrl: './dataset-list.component.html',
-  styleUrls: ['./dataset-list.component.css']
+  styleUrls: ['./dataset-list.component.css'],
+  providers: [ DatasetDaoService ]
 })
 export class DatasetListComponent implements OnInit {
 

@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  userData: firebase.User | null = null;
+  private userData: firebase.User | null = null;
 
   constructor(public auth: AngularFireAuth, private router: Router) {
     auth.authState.subscribe(user => {

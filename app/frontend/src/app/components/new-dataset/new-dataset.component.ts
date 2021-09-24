@@ -20,7 +20,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-new-dataset',
   templateUrl: './new-dataset.component.html',
-  styleUrls: ['./new-dataset.component.css']
+  styleUrls: ['./new-dataset.component.css'],
+  providers: [ DatasetDaoService ]
 })
 export class NewDatasetComponent implements OnInit {
 

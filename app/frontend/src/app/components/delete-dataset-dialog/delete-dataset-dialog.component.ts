@@ -13,7 +13,8 @@ import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
 @Component({
   selector: 'app-delete-dataset-dialog',
   templateUrl: './delete-dataset-dialog.component.html',
-  styleUrls: ['./delete-dataset-dialog.component.css']
+  styleUrls: ['./delete-dataset-dialog.component.css'],
+  providers: [ DatasetDaoService ]
 })
 export class DeleteDatasetDialogComponent {
 

@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class TopBarComponent {
 
   constructor(public auth: AuthService, private router: Router) { }
-  
+
   signOut() {
     this.auth.signOut();
     this.router.navigateByUrl("/login");
