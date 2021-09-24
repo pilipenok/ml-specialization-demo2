@@ -9,6 +9,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { AuthService } from './auth.service';
+import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +19,14 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage, private auth: AuthService) { }
 
-  uploadFile(file: string, filename: string): AngularFireUploadTask {
+  uploadFile(file: string, filename: string, onCompleteFn: (url: Observable<any>) => void): AngularFireUploadTask {
     const filePath = this.auth.getUserId() +  '/' + filename;
     const ref = this.storage.ref(filePath);
     const task = ref.put(file);
+    task.snapshotChanges().pipe(
+                  finalize(() => onCompleteFn(ref.getDownloadURL()) )
+               )
+              .subscribe()
     return task;
   }
 }

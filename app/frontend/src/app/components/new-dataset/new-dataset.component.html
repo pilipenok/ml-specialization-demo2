@@ -4,49 +4,54 @@
       <h1>New dataset</h1>
     </div>
     <div class="card mat-elevation-z8">
-      <mat-stepper orientation="vertical">
-        <mat-step>
-          <ng-template matStepLabel>Step 1</ng-template>
-          <ng-template matStepContent>
-            <mat-form-field class="full-width" appearance="fill">
-              <mat-label>Name</mat-label>
-              <input matInput placeholder="my dataset" [formControl]="name" required>
-            </mat-form-field>
-
-            <mat-form-field class="full-width" appearance="fill">
-              <mat-label>Description (optional)</mat-label>
-              <textarea matInput [formControl]="description"></textarea>
-            </mat-form-field>
+      <mat-stepper orientation="vertical" linear="true">
+        <mat-step [stepControl]="firstFormGroup" #step1>
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Step 1</ng-template>
+            <ng-template matStepContent>
+              <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="my dataset" [formControl]="name" required>
+              </mat-form-field>
+              <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Description (optional)</mat-label>
+                <textarea matInput [formControl]="description"></textarea>
+              </mat-form-field>
+              <br/>
+              <button mat-button matStepperNext>Next</button>
+            </ng-template>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup" #step2>
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Step 2</ng-template>
+            <ng-template matStepContent>
+              <p></p>
+              <mat-label>File location</mat-label>
+              <div class="file-input-container">
+                <div class="file-path" #fileLocation></div>
+                <input type="hidden" [formControl]="fileUrl" />
+                <input class="hide" #fileInput type="file" (change)="fileLocation.innerHTML=fileInput.value; onFileChanged($event)" accept=".csv"/>
+                <button mat-flat-button color="primary" (click)="fileInput.click()">Choose File (CSV)</button>
+                <mat-progress-bar mode="determinate" [value]="uploadPercent | async"></mat-progress-bar>
+              </div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext [disabled]="fileUrl.value == ''">Next</button>
+            </ng-template>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="thirdFormGroup" #step3>
+          <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Step 3</ng-template>
+            <p>You can now start the training</p>
+            <input type="hidden" [formControl]="startModelResult" />
+            <button mat-raised-button color="primary" (click)="onSubmit();" [disabled]="!generateMlAvailable">Generate ML-model</button>
             <br/>
-            <button mat-button matStepperNext>Next</button>
-          </ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Step 2</ng-template>
-          <ng-template matStepContent>
-            <p></p>
-            <mat-label>File location</mat-label>
-            <div class="file-input-container">
-              <div #filePath class="file-path"></div>
-              <input class="hide" #fileInput type="file" (change)="filePath.innerHTML=fileInput.value; setFile($event)" accept=".csv"/>
-              <button mat-flat-button color="primary" (click)="fileInput.click()">Choose File (CSV)</button>
-              <button mat-flat-button color="primary" (click)="uploadFile()">Upload</button>
-              <mat-progress-bar mode="determinate" [value]="uploadPercent | async"></mat-progress-bar>
-            </div>
+            <br/>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </ng-template>
+          </form>
         </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Step 3</ng-template>
-          <p>You can now start the training</p>
-          <button mat-raised-button color="primary" (click)="onSubmit()">Generate ML-model</button>
-          <br/>
-          <br/>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </mat-step>
-        <mat-step>
+        <mat-step #doneStep>
           <ng-template matStepLabel>Done</ng-template>
           <p>Model training is going to be ready in about 3 hours</p>
           <a routerLink="/">
@@ -55,8 +60,5 @@
         </mat-step>
       </mat-stepper>
     </div>
-    <a routerLink="/">
-      <button mat-raised-button color="primary" class="cancel-btn">Cancel</button>
-    </a>
   </div>
 </div>
