@@ -19,14 +19,10 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage, private auth: AuthService) { }
 
-  uploadFile(file: string, filename: string, onCompleteFn: (url: Observable<any>) => void): AngularFireUploadTask {
+  uploadFile(file: string, filename: string): AngularFireUploadTask {
     const filePath = this.auth.getUserId() +  '/' + filename;
     const ref = this.storage.ref(filePath);
     const task = ref.put(file);
-    task.snapshotChanges().pipe(
-                  finalize(() => onCompleteFn(ref.getDownloadURL()) )
-               )
-              .subscribe()
     return task;
   }
 }

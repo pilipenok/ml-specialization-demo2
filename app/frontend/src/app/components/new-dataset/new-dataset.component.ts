@@ -35,7 +35,8 @@ export class NewDatasetComponent implements OnInit {
 
   name = new FormControl('', [Validators.required]);
   description = new FormControl('');
-  fileUrl = new FormControl('', [Validators.required]); // hidden
+
+  fileUploadResult = new FormControl('', [Validators.required]); // hidden
   startModelResult = new FormControl('', [Validators.required]); // hidden
 
   firstFormGroup!: FormGroup;
@@ -45,6 +46,7 @@ export class NewDatasetComponent implements OnInit {
   uploadPercent!: Observable<number | undefined>;
   generateMlAvailable: boolean = true;
   next2Disabled: boolean = true;
+  fileLocation: string = '';
 
   constructor(private authService : AuthService,
               private dao : DatasetDaoService,
@@ -53,15 +55,23 @@ export class NewDatasetComponent implements OnInit {
   ngOnInit(): void {
     this.datasetId = this.dao.generateId();
     this.firstFormGroup = new FormGroup({'name': this.name, 'description': this.description});
-    this.secondFormGroup = new FormGroup({'fileUrl': this.fileUrl});
+    this.secondFormGroup = new FormGroup({'fileUploadResult': this.fileUploadResult});
     this.thirdFormGroup = new FormGroup({'startModelResult': this.startModelResult});
   }
 
   onFileChanged(event: any): void {
-    if (event.srcElement.files.length > 0) {
-      this.file = event.srcElement.files[0];
-      this.uploadFile(this.file);
+    this.fileLocation = '';
+
+    if (event.srcElement.files.length == 0) return;
+
+    const file = event.srcElement.files[0];
+    if (file.size > 1024 * 1024 * 1024) { // 1 Gb
+      this.fileLocation = 'File is too large';
+      return;
     }
+    this.fileLocation = file.name;
+    this.file = file;
+    this.uploadFile(file);
   }
   
   onSubmit(): void {
@@ -86,16 +96,10 @@ export class NewDatasetComponent implements OnInit {
 
   uploadFile(file: any): void {
     if (file != null) {
-      const task = this.storage.uploadFile(
-                                  file,
-                                  this.makeFilePath(),
-                                  url => { this.fileUrl.setValue(url); } );
+      const task = this.storage.uploadFile(file, this.datasetId + '.csv');
       this.uploadPercent = task.percentageChanges();
+      this.uploadPercent.subscribe(val => { if (val == 100) this.fileUploadResult.setValue("done"); });
     }
-  }
-
-  makeFilePath(): string {
-    return this.authService.getUserId() + '/' + this.datasetId + '.csv';
   }
 
   isFirstStepCompleted(): boolean {

@@ -39,6 +39,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 import { DeleteDatasetDialogComponent } from './components/delete-dataset-dialog/delete-dataset-dialog.component';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/firestore';
+import { USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,9 @@ import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/fir
     AngularFirestoreModule,
     AngularFireStorageModule
   ],
-  providers: [{ provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined }],
+  providers: [
+    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
+    { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
