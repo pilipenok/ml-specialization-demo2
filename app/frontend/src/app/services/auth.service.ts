@@ -19,7 +19,7 @@ export class AuthService {
 
   private userData: firebase.User | null = null;
 
-  constructor(public auth: AngularFireAuth, private router: Router) {
+  constructor(private auth: AngularFireAuth, private router: Router) {
     auth.authState.subscribe(user => {
       this.userData = user;
     });

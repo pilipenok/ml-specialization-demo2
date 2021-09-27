@@ -17,10 +17,12 @@ import { Observable } from 'rxjs';
 })
 export class StorageService {
 
+  readonly DATASETS_DIRECTORY_NAME = 'datasets';
+
   constructor(private storage: AngularFireStorage, private auth: AuthService) { }
 
   uploadFile(file: string, filename: string): AngularFireUploadTask {
-    const filePath = this.auth.getUserId() +  '/' + filename;
+    const filePath = this.DATASETS_DIRECTORY_NAME + '/' + this.auth.getUserId() +  '/' + filename;
     const ref = this.storage.ref(filePath);
     const task = ref.put(file);
     return task;

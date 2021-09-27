@@ -26,7 +26,7 @@ export class DatasetListComponent implements OnInit {
 
   datasets!: Observable<Dataset[]>;
 
-  constructor(private dao: DatasetDaoService, public dialog: MatDialog) { }
+  constructor(private dao: DatasetDaoService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.datasets = this.dao.getDatasets();
