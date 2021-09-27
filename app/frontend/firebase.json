@@ -21,6 +21,10 @@
         {
           "source": "**",
           "destination": "/index.html"
+        },
+        {
+          "source": "/getPrediction",
+          "function": "getPrediction"
         }
       ]
     }
@@ -50,4 +54,3 @@
     }
   }
 }
-

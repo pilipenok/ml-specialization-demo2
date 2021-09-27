@@ -35,11 +35,14 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireFunctionsModule, REGION } from '@angular/fire/compat/functions';
+//import { ORIGIN, NEW_ORIGIN_BEHAVIOR } from '@angular/fire/compat/functions';
 
 import { environment } from '../environments/environment';
 import { DeleteDatasetDialogComponent } from './components/delete-dataset-dialog/delete-dataset-dialog.component';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/firestore';
 import { USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
+import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/functions';
 
 @NgModule({
   declarations: [
@@ -71,11 +74,17 @@ import { USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/stora
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFireFunctionsModule
   ],
   providers: [
     { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
-    { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined }],
+    { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined },
+    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined },
+    { provide: REGION, useValue: 'us-central1' },
+    //{ provide: NEW_ORIGIN_BEHAVIOR, useValue: true },
+   // { provide: ORIGIN, useValue: 'https://or2--epm-gcp-by-meetup2-t1iylu.web.app' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

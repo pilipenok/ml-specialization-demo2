@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  useEmulators: false,
+  useEmulators: true,
   firebase: {
    apiKey: "AIzaSyBWaosBD7Op1QB80b_5DyPEldrqWSn3zJs",
    authDomain: "or2--epm-gcp-by-meetup2-t1iylu.firebaseapp.com",
