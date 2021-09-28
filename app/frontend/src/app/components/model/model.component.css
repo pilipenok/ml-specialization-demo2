@@ -1,0 +1,12 @@
+mat-card {
+  margin: 20px;
+  margin-left: 190px;
+}
+
+table td {
+  padding-right: 20px;
+}
+
+mat-form-field {
+  width: 300px;
+}

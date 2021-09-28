@@ -19,8 +19,10 @@ export class PredictionsService {
 
   constructor(private fns: AngularFireFunctions) { }
 
-  getPrediction() {
+  getPrediction(gender: string, age: string, maritalStatus: string, occupation: string,
+                cityCategory: string, stayInCityYears: string,
+                onCompleteFn: (result: string) => void) {
     const res: Observable<any> = this.callable({ name: 'some-data' });
-    res.subscribe(v => { console.log(v.prediction); });
+    res.subscribe(v => { onCompleteFn(v.prediction); });
   }
 }

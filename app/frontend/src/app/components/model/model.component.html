@@ -1,0 +1,84 @@
+<mat-card>
+  <mat-card-title>Model API</mat-card-title>
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Gender</mat-label>
+            <mat-select [(ngModel)]="selectedGender" required>
+              <mat-option *ngFor="let gender of genderList" [value]="gender.value">
+                {{gender.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Age</mat-label>
+            <mat-select [(ngModel)]="selectedAge" required>
+              <mat-option *ngFor="let age of ageList" [value]="age.value">
+                {{age.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Marital Status</mat-label>
+            <mat-select [(ngModel)]="selectedMaritalStatus" required>
+              <mat-option *ngFor="let item of maritalStatusList" [value]="item.value">
+                {{item.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Occupation</mat-label>
+            <mat-select [(ngModel)]="selectedOccupation" required>
+              <mat-option *ngFor="let item of occupationList" [value]="item.value">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>City Category</mat-label>
+            <mat-select [(ngModel)]="selectedCityCategory" required>
+              <mat-option *ngFor="let item of cityCategoryList" [value]="item.value">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Stay In Current City Years</mat-label>
+            <mat-select [(ngModel)]="selectedStayInCity" required>
+              <mat-option *ngFor="let item of stayInCityList" [value]="item.value">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="onSubmit()">Get Prediction</button>
+  </mat-card-actions>
+  <mat-card-footer>
+    <mat-progress-bar mode="indeterminate" *ngIf="false"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Result</mat-card-title>
+  <mat-card-content>{{predictionResult}}</mat-card-content>
+</mat-card>

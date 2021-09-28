@@ -32,13 +32,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireFunctionsModule, REGION } from '@angular/fire/compat/functions';
-//import { ORIGIN, NEW_ORIGIN_BEHAVIOR } from '@angular/fire/compat/functions';
 
 import { environment } from '../environments/environment';
 import { DeleteDatasetDialogComponent } from './components/delete-dataset-dialog/delete-dataset-dialog.component';
@@ -46,6 +46,7 @@ import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/fir
 import { USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
 import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/functions';
 import { MenuComponent } from './components/menu/menu.component';
+import { ModelComponent } from './components/model/model.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MenuComponent } from './components/menu/menu.component';
     DatasetDetailsComponent,
     DeleteDatasetDialogComponent,
     MenuComponent,
+    ModelComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +79,7 @@ import { MenuComponent } from './components/menu/menu.component';
     MatDialogModule,
     MatSidenavModule,
     MatMenuModule,
+    MatSelectModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
@@ -88,8 +91,6 @@ import { MenuComponent } from './components/menu/menu.component';
     { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined },
     { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined },
     { provide: REGION, useValue: 'us-central1' },
-    //{ provide: NEW_ORIGIN_BEHAVIOR, useValue: true },
-   // { provide: ORIGIN, useValue: 'https://or2--epm-gcp-by-meetup2-t1iylu.web.app' }
   ],
   bootstrap: [AppComponent]
 })

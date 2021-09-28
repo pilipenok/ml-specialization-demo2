@@ -12,7 +12,6 @@ import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
 import { Observable } from 'rxjs';
 import { DeleteDatasetDialogComponent } from '../delete-dataset-dialog/delete-dataset-dialog.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PredictionsService } from '../../services/predictions.service';
 
 @Component({
   selector: 'app-dataset-list',
@@ -27,7 +26,7 @@ export class DatasetListComponent implements OnInit {
 
   datasets!: Observable<Dataset[]>;
 
-  constructor(private dao: DatasetDaoService, private dialog: MatDialog, private predictionsService: PredictionsService) { }
+  constructor(private dao: DatasetDaoService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.datasets = this.dao.getDatasets();
@@ -38,9 +37,5 @@ export class DatasetListComponent implements OnInit {
       width: '350px',
       data: dataset
     });
-  }
-
-  test() {
-    this.predictionsService.getPrediction();
   }
 }
