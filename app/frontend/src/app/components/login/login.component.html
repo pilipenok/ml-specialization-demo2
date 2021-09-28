@@ -11,7 +11,7 @@ TODO: On click -> On submit: https://stackblitz.com/angular/moyjggqrglal?file=sr
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'"  required  [formControl]="password">
+        <input matInput [type]="hide ? 'password' : 'text'" required [formControl]="password">
         <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>

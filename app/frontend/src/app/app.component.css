@@ -2,3 +2,8 @@
   background: #fafafa;
   height: -webkit-fill-available;
 }
+
+.drawer-container {
+  height: 100%;
+}
+

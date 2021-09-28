@@ -6,16 +6,16 @@
  * from EPAM Systems, Inc
  */
 
-const functions = require("firebase-functions");
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
-exports.getPrediction = functions.https.onCall((data, context) => {
-  if (!context.auth || !context.auth.uid) {
-    return {
-      error: 'Unauthorized'
-    };
-  }
-  
-  return {
-    prediction: data.name
-  };
-});
+@Component({
+  selector: 'app-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.css']
+})
+export class MenuComponent {
+
+  constructor(public authService: AuthService) { }
+
+}
