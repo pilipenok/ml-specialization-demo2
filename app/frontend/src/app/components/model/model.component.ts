@@ -91,6 +91,7 @@ export class ModelComponent implements OnInit {
   selectedStayInCity!: string;
 
   predictionResult: string = '';
+  queryInProgress: boolean = false;
 
   constructor(private predictionsService: PredictionsService) { }
 
@@ -101,9 +102,13 @@ export class ModelComponent implements OnInit {
         || !this.selectedOccupation || !this.selectedCityCategory || !this.selectedStayInCity) {
       return;
     }
+    this.queryInProgress = true;
     this.predictionsService.getPrediction(this.selectedGender, this.selectedAge,
                   this.selectedMaritalStatus, this.selectedOccupation,
                   this.selectedCityCategory, this.selectedStayInCity,
-                  v => { this.predictionResult = v; });
+                  v => {
+                      this.queryInProgress = false;
+                      this.predictionResult = v;
+                  });
   }
 }
