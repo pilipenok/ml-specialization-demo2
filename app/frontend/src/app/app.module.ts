@@ -37,7 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 import { AngularFireFunctionsModule, REGION } from '@angular/fire/compat/functions';
 
 import { environment } from '../environments/environment';
@@ -87,6 +87,7 @@ import { ModelComponent } from './components/model/model.component';
     AngularFireFunctionsModule
   ],
   providers: [
+    { provide: BUCKET, useValue: 'epm-spec-black-friday' },
     { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
     { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined },
     { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined },

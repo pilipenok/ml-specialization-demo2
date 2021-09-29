@@ -34,6 +34,7 @@
     "indexes": "firestore.indexes.json"
   },
   "storage": {
+    "target": "main",
     "rules": "storage.rules"
   },
   "emulators": {
@@ -52,5 +53,8 @@
     "ui": {
       "enabled": true
     }
+  },
+  "functions": {
+    "source": "functions"
   }
 }

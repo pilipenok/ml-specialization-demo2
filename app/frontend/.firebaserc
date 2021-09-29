@@ -1,14 +1,19 @@
 {
+  "projects": {
+    "default": "or2--epm-gcp-by-meetup2-t1iylu"
+  },
   "targets": {
     "or2--epm-gcp-by-meetup2-t1iylu": {
       "hosting": {
         "frontend": [
           "or2--epm-gcp-by-meetup2-t1iylu"
         ]
+      },
+      "storage": {
+        "main": [
+          "epm-spec-black-friday"
+        ]
       }
     }
-  },
-  "projects": {
-    "default": "or2--epm-gcp-by-meetup2-t1iylu"
   }
 }

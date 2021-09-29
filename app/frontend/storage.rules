@@ -1,14 +1,13 @@
 rules_version = '2';
 service firebase.storage {
-  match /b/{bucket}/o {
-    match /datasets/{userId}/{file=**} {
-      allow create: if request.auth != null
-                    && request.auth.uid == userId
-                    && (request.resource.contentType.matches('text/csv')
-                        || request.resource.contentType.matches('text/plain'))
-                    && request.resource.size <= 1024 * 1024 * 1024 // 1Gb
-                    && request.resource.name.matches('datasets/' + userId + '/dataset\\.csv');
+    match /b/epm-spec-black-friday/o {
+        match /datasets/{userId}/{file=**} {
+            allow create: if request.auth != null
+                             && request.auth.uid == userId
+                             && (request.resource.contentType.matches('text/csv')
+                                 || request.resource.contentType.matches('text/plain'))
+                             && request.resource.size <= 1024 * 1024 * 1024 // 1Gb
+                             && request.resource.name.matches('datasets/' + userId + '/dataset\\.csv');
+        }
     }
-  }
 }
-
