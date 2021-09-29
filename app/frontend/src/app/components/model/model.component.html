@@ -78,7 +78,7 @@
   </mat-card-footer>
 </mat-card>
 
-<mat-card>
+<mat-card *ngIf="predictionResult">
   <mat-card-title>Result</mat-card-title>
   <mat-card-content>{{predictionResult}}</mat-card-content>
 </mat-card>

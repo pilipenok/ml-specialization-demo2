@@ -48,7 +48,7 @@ export class NewDatasetComponent implements OnInit {
   next2Disabled: boolean = true;
   fileLocation: string = '';
 
-  constructor(private authService : AuthService,
+  constructor(private auth : AuthService,
               private dao : DatasetDaoService,
               private storage : StorageService) { }
 
@@ -95,14 +95,12 @@ export class NewDatasetComponent implements OnInit {
   }
 
   uploadFile(file: any): void {
-    if (file != null) {
-      const task = this.storage.uploadFile(file, this.datasetId + '.csv');
+    if (file && this.auth.isSignedIn()) {
+      const task = this.storage.uploadFile(file, this.auth.getUserId() + '/dataset.csv');
       this.uploadPercent = task.percentageChanges();
-      this.uploadPercent.subscribe(val => { if (val == 100) this.fileUploadResult.setValue("done"); });
+      this.uploadPercent.subscribe(val => {
+        if (val == 100) this.fileUploadResult.setValue("done");
+      });
     }
-  }
-
-  isFirstStepCompleted(): boolean {
-    return true;
   }
 }

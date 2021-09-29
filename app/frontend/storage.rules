@@ -7,7 +7,7 @@ service firebase.storage {
                     && (request.resource.contentType.matches('text/csv')
                         || request.resource.contentType.matches('text/plain'))
                     && request.resource.size <= 1024 * 1024 * 1024 // 1Gb
-                    && request.resource.name.matches('.*\\.csv');
+                    && request.resource.name.matches('datasets/' + userId + '/dataset\\.csv');
     }
   }
 }

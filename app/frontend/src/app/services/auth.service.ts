@@ -25,7 +25,7 @@ export class AuthService {
     });
    }
   
-  signIn(email: string, password: string) {
+  signIn(email: string, password: string): void {
     this.auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         this.userData = userCredential.user;
@@ -33,11 +33,11 @@ export class AuthService {
       });
   }
   
-  isSignedIn() {
+  isSignedIn(): boolean {
     return this.userData != null;
   }
   
-  signOut() {
+  signOut(): void {
     this.auth.signOut();
     this.userData = null;
     this.router.navigateByUrl("/login");
