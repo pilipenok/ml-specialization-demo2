@@ -26,7 +26,7 @@
           <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Dataset File</ng-template>
             <ng-template matStepContent>
-              <p>Choose the file with training data. Maximum size is 1Gb.</p>
+              <p>Choose the file with training data. (should not exceed 1Gb)</p>
               <div class="file-input-container">
                 <div class="file-path">{{fileLocation}}</div>
                 <input type="hidden" [formControl]="fileUploadResult" />
@@ -35,24 +35,12 @@
                 <mat-progress-bar mode="determinate" [value]="uploadPercent | async"></mat-progress-bar>
               </div>
               <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext [disabled]="fileUploadResult.value == ''">Next</button>
             </ng-template>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="thirdFormGroup" #step3>
-          <form [formGroup]="thirdFormGroup">
-            <ng-template matStepLabel>ML Training</ng-template>
-            <p>You can now start the training.</p>
-            <input type="hidden" [formControl]="startModelResult" />
-            <button mat-raised-button color="primary" (click)="onSubmit();" [disabled]="!generateMlAvailable">Start training</button>
-            <br/>
-            <br/>
-            <button mat-button matStepperPrevious>Back</button>
           </form>
         </mat-step>
         <mat-step #doneStep>
           <ng-template matStepLabel>Done</ng-template>
-          <p>You are all set! Model training is going to be finished in about 3 hours.</p>
+          <p>You are all done! Model training is going to be finished in about 3 hours.</p>
           <a routerLink="/">
             <button mat-raised-button color="primary">To the list</button>
           </a>

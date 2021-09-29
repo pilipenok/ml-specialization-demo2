@@ -25,27 +25,21 @@ import { Observable } from 'rxjs';
 })
 export class NewDatasetComponent implements OnInit {
 
-  private datasetId!: string;
   private file: any = null;
 
   @ViewChild('step1') step1!: MatStep;
   @ViewChild('step2') step2!: MatStep;
-  @ViewChild('step3') step3!: MatStep;
   @ViewChild('doneStep') doneStep!: MatStep;
 
   name = new FormControl('', [Validators.required]);
   description = new FormControl('');
 
   fileUploadResult = new FormControl('', [Validators.required]); // hidden
-  startModelResult = new FormControl('', [Validators.required]); // hidden
 
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
-  thirdFormGroup!: FormGroup;
 
   uploadPercent!: Observable<number | undefined>;
-  generateMlAvailable: boolean = true;
-  next2Disabled: boolean = true;
   fileLocation: string = '';
 
   constructor(private auth : AuthService,
@@ -53,10 +47,8 @@ export class NewDatasetComponent implements OnInit {
               private storage : StorageService) { }
 
   ngOnInit(): void {
-    this.datasetId = this.dao.generateId();
     this.firstFormGroup = new FormGroup({'name': this.name, 'description': this.description});
     this.secondFormGroup = new FormGroup({'fileUploadResult': this.fileUploadResult});
-    this.thirdFormGroup = new FormGroup({'startModelResult': this.startModelResult});
   }
 
   onFileChanged(event: any): void {
@@ -71,35 +63,34 @@ export class NewDatasetComponent implements OnInit {
     }
     this.fileLocation = file.name;
     this.file = file;
-    this.uploadFile(file);
-  }
-  
-  onSubmit(): void {
-    if (this.firstFormGroup.errors == null
-        && this.secondFormGroup.errors == null
-        && this.thirdFormGroup.errors == null) {
-      this.dao.createDataset(
-                  this.datasetId,
-                  this.name.value,
-                  this.description.value,
-                  this.file.name,
-                  this.file.type,
-                  this.file.size);
-      this.generateMlAvailable = false;
-      this.startModelResult.setValue(true);
+    this.uploadFile(file, () => {
+      this.createDataset();
       this.doneStep.select();
       this.step1.editable = false;
       this.step2.editable = false;
-      this.step3.editable = false;
-    }
+    });
+  }
+  
+  createDataset(): void {
+    const datasetId: string = this.dao.generateId();
+    this.dao.createDataset(
+                datasetId,
+                this.name.value,
+                this.description.value,
+                this.file.name,
+                this.file.type,
+                this.file.size);
   }
 
-  uploadFile(file: any): void {
+  uploadFile(file: any, onSuccess: () => void): void {
     if (file && this.auth.isSignedIn()) {
       const task = this.storage.uploadFile(file, this.auth.getUserId() + '/dataset.csv');
       this.uploadPercent = task.percentageChanges();
       this.uploadPercent.subscribe(val => {
-        if (val == 100) this.fileUploadResult.setValue("done");
+        if (val == 100) {
+          this.fileUploadResult.setValue("done");
+          onSuccess();
+        }
       });
     }
   }
