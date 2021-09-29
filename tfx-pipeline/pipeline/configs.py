@@ -4,7 +4,7 @@ This file defines environments for a TFX taxi pipeline.
 
 import tfx
 
-PIPELINE_NAME = 'tfx-pipeline-ml'
+PIPELINE_NAME = 'tfx-pipeline-ml-demo2-black-friday'
 GOOGLE_CLOUD_PROJECT = 'or2--epm-gcp-by-meetup2-t1iylu'
 GCS_BUCKET_NAME = 'epm-spec-black-friday'
 GOOGLE_CLOUD_REGION = 'us-central1'

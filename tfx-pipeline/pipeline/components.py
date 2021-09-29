@@ -16,14 +16,14 @@ from tfx import types
 from typing import Optional
 from tfx.types.standard_artifacts import Model, ModelBlessing
 
-from pipeline import config
+from pipeline import configs
 from models.baseline import features
 
 
 # Brings data into the pipeline or otherwise joins/converts training data.
 def example_gen() -> tfx.components.CsvExampleGen:
     return tfx.components.CsvExampleGen(
-        input_base=config.DATA_PATH
+        input_base=configs.DATA_PATH
     )
 
 
@@ -55,8 +55,8 @@ def transform(
     schema: types.Channel
 ) -> tfx.components.Transform:
     return tfx.components.Transform(
-        #preprocessing_fn=config.PREPROCESSING_FN,
-        module_file=config.MODULE_FILE,
+        #preprocessing_fn=configs.PREPROCESSING_FN,
+        module_file=configs.MODULE_FILE,
         examples=examples,
         schema=schema,
     )
@@ -70,12 +70,12 @@ def trainer(
     hyperparameters: Optional[types.Channel] = None
 ) -> tfx.components.Trainer:
     args = dict(
-        #run_fn=config.RUN_FN,
-        module_file=config.MODULE_FILE,
-        train_args=trainer_pb2.TrainArgs(num_steps=config.TRAIN_NUM_STEPS),
-        eval_args=trainer_pb2.EvalArgs(num_steps=config.EVAL_NUM_STEPS),
+        #run_fn=configs.RUN_FN,
+        module_file=configs.MODULE_FILE,
+        train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
+        eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
         custom_config={
-            ai_platform_trainer_executor.TRAINING_ARGS_KEY: config.GCP_AI_PLATFORM_TRAINING_ARGS
+            ai_platform_trainer_executor.TRAINING_ARGS_KEY: configs.GCP_AI_PLATFORM_TRAINING_ARGS
         }
     )
 
@@ -99,14 +99,14 @@ def trainer_vertex(
     hyperparameters: Optional[types.Channel] = None
 ) -> tfx.components.Trainer:
     args = dict(
-        module_file=config.MODULE_FILE,
-        train_args=trainer_pb2.TrainArgs(num_steps=config.TRAIN_NUM_STEPS),
-        eval_args=trainer_pb2.EvalArgs(num_steps=config.EVAL_NUM_STEPS),
+        module_file=configs.MODULE_FILE,
+        train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
+        eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
         custom_config={
             ENABLE_VERTEX_KEY: True,
-            VERTEX_REGION_KEY: config.GOOGLE_CLOUD_REGION,
-            TRAINING_ARGS_KEY: config.GCP_VERTEX_AI_TRAINING_ARGS,
-            'use_gpu': config.USE_GPU,
+            VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
+            TRAINING_ARGS_KEY: configs.GCP_VERTEX_AI_TRAINING_ARGS,
+            'use_gpu': configs.USE_GPU,
         }
     )
     if examples:
@@ -140,12 +140,12 @@ def evaluator(
     # perform quality validation of a candidate model (compared to a baseline).
 
     eval_config = tfma.EvalConfig(
-        model_specs=[tfma.ModelSpec(label_key=features.LABEL_KEY)],
+        #model_specs=[tfma.ModelSpec(label_key=features.LABEL_KEY)],
         slicing_specs=[tfma.SlicingSpec()],
         metrics_specs=[
             tfma.MetricsSpec(metrics=[
-                tfma.MetricConfig(class_name='RootMeanSquaredError'),
-                tfma.MetricConfig(class_name='MeanAbsolutePercentageError')
+                tfma.Metricconfig(class_name='RootMeanSquaredError'),
+                tfma.Metricconfig(class_name='MeanAbsolutePercentageError')
             ])
         ])
 
@@ -171,7 +171,7 @@ def pusher(
         model=model,
         custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
         custom_config={
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: config.GCP_AI_PLATFORM_SERVING_ARGS
+            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_AI_PLATFORM_SERVING_ARGS
         }
     )
     if model_blessing:
@@ -189,10 +189,10 @@ def pusher_vertex(
         custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
         custom_config={
             ENABLE_VERTEX_KEY: True,
-            VERTEX_REGION_KEY: config.GOOGLE_CLOUD_REGION,
+            VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
             VERTEX_CONTAINER_IMAGE_URI_KEY: 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest',
             # See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: config.GCP_AI_PLATFORM_SERVING_ARGS
+            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_AI_PLATFORM_SERVING_ARGS
         }
     )
     if model_blessing:
@@ -208,15 +208,15 @@ def tuner(
     base_model: Optional[types.Channel] = None,
 ):
     args = dict(
-        module_file=config.MODULE_FILE,
+        module_file=configs.MODULE_FILE,
         examples=examples,
-        train_args=trainer_pb2.TrainArgs(num_steps=config.TRAIN_NUM_STEPS),
-        eval_args=trainer_pb2.EvalArgs(num_steps=config.EVAL_NUM_STEPS),
-        tune_args=tuner_pb2.TuneArgs(num_parallel_trials=config.TUNE_NUM_PARALLEL_TRIALS),
+        train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
+        eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
+        tune_args=tuner_pb2.TuneArgs(num_parallel_trials=configs.TUNE_NUM_PARALLEL_TRIALS),
         custom_config={
-            # Configures Cloud AI Platform-specific config. For details, see
+            # configures Cloud AI Platform-specific configs. For details, see
             # https://cloud.google.com/ai-platform/training/docs/reference/rest/v1/projects.jobs#traininginput.
-            TUNING_ARGS_KEY: config.GCP_AI_PLATFORM_TUNING_ARGS
+            TUNING_ARGS_KEY: configs.GCP_AI_PLATFORM_TUNING_ARGS
         }
     )
 

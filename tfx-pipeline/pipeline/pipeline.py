@@ -58,14 +58,16 @@ def create_pipeline(
     )
     model = _trainer.outputs['model']
 
-    _model_resolver = pc.model_resolver()
-    baseline_model = _model_resolver.outputs['model']
+    #_model_resolver = pc.model_resolver()
+    #baseline_model = _model_resolver.outputs['model']
 
-    _evaluator = pc.evaluator(examples=examples, model=model, baseline_model=baseline_model)
-    model_blessing = _evaluator.outputs['blessing']
+    #_evaluator = pc.evaluator(examples=examples, model=model, baseline_model=baseline_model)
+    #model_blessing = _evaluator.outputs['blessing']
 
     pusher = pc.pusher_vertex if enable_vertex else pc.pusher
-    _pusher = pusher(model=model, model_blessing=model_blessing)
+    _pusher = pusher(model=model,
+                     #model_blessing=model_blessing
+                     )
 
     components = [
         _example_gen,
@@ -73,8 +75,8 @@ def create_pipeline(
         _schema_gen,
         _example_validator,
         _trainer,
-        _model_resolver,
-        _evaluator,
+        #_model_resolver,
+        #_evaluator,
         _pusher
     ]
 
