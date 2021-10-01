@@ -1,6 +1,5 @@
 mat-card {
   margin: 20px;
-  margin-left: 190px;
 }
 
 table td {
@@ -9,4 +8,8 @@ table td {
 
 mat-form-field {
   width: 300px;
+}
+
+table.result-table {
+  min-width: 500px;
 }
