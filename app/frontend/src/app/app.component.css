@@ -3,7 +3,18 @@
   height: -webkit-fill-available;
 }
 
-.drawer-container {
-  height: 100%;
+table {
+  border: none;
+  height: 100vh;
+  width: 100%;
 }
 
+table td {
+  vertical-align: top;
+}
+
+td.menu {
+  background: white;
+  border-right: 1px solid #0000001f;
+  width: 200px;
+}

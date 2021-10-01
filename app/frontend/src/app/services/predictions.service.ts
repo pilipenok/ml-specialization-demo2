@@ -10,19 +10,53 @@ import { Injectable } from '@angular/core';
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { Observable } from 'rxjs';
 
+export interface Row {
+  position: number;
+  item: string;
+  prediction: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PredictionsService {
 
-  readonly callable = this.fns.httpsCallable('getPrediction');
+  readonly getPredictionsFunction = this.fns.httpsCallable('getPredictions');
 
   constructor(private fns: AngularFireFunctions) { }
 
   getPrediction(gender: string, age: string, maritalStatus: string, occupation: string,
                 cityCategory: string, stayInCityYears: string,
-                onCompleteFn: (result: string) => void) {
-    const res: Observable<any> = this.callable({ name: 'some-data' });
-    res.subscribe(v => { onCompleteFn(v.prediction); });
+                onSuccessFn: (values: Row[]) => void,
+                onErrorFn: (error: string) => void,
+                onComplete: () => void) {
+    const response: Observable<any> = this.getPredictionsFunction({ name: 'some-data' });
+    response.subscribe(
+      (encodedPromise) => {
+        const values = this.extractValues(encodedPromise);
+        onSuccessFn(values);
+      },
+      (error) => {
+        onErrorFn(error);
+      },
+      () => {
+        onComplete();
+      });
+  }
+
+  extractValues(encodedPromise: any): Row[] {
+    const [a] = encodedPromise;
+    const [predictions] = a.predictions;
+    const v1 = predictions.structValue.fields.output_1.listValue.values;
+    const v2 = predictions.structValue.fields.output_2.listValue.values;
+    let result:Row[] = [];
+    for (let i = 0; i < v1.length; i++) {
+      result[i] = {
+          position: i + 1,
+          item: v2[i].stringValue,
+          prediction: v1[i].numberValue
+        };
+    }
+    return result;
   }
 }

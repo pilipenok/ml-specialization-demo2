@@ -6,9 +6,9 @@
  * from EPAM Systems, Inc
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { PredictionsService } from '../../services/predictions.service';
+import { PredictionsService, Row } from '../../services/predictions.service';
 
 interface Item {
   value: string;
@@ -23,7 +23,44 @@ interface ItemShort {
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.css']
 })
-export class ModelComponent implements OnInit {
+export class ModelComponent {
+
+  selectedGender!: string;
+  selectedAge!: string;
+  selectedMaritalStatus!: string;
+  selectedOccupation!: string;
+  selectedCityCategory!: string;
+  selectedStayInCity!: string;
+
+  requestError: string | null = null;
+  queryInProgress: boolean = false;
+
+  displayedColumns: string[] = ['position', 'item', 'prediction'];
+  dataSource: Row[] | null = null;
+
+  constructor(private predictionsService: PredictionsService) { }
+
+  onSubmit(): void {
+    if (!this.selectedGender || !this.selectedAge || !this.selectedMaritalStatus
+        || !this.selectedOccupation || !this.selectedCityCategory || !this.selectedStayInCity) {
+      return;
+    }
+    this.queryInProgress = true;
+    this.dataSource = null;
+    this.requestError = null;
+    this.predictionsService.getPrediction(this.selectedGender, this.selectedAge,
+                  this.selectedMaritalStatus, this.selectedOccupation,
+                  this.selectedCityCategory, this.selectedStayInCity,
+                  (values: Row[]) => {
+                    this.dataSource = values;
+                  },
+                  error => {
+                    this.requestError = error;
+                  },
+                  () => {
+                    this.queryInProgress = false;
+                  });
+  }
 
   genderList: Item[] = [
     {value: 'M', viewValue: 'Male'},
@@ -82,33 +119,4 @@ export class ModelComponent implements OnInit {
     {value: '3'},
     {value: '4+'},
   ];
-
-  selectedGender!: string;
-  selectedAge!: string;
-  selectedMaritalStatus!: string;
-  selectedOccupation!: string;
-  selectedCityCategory!: string;
-  selectedStayInCity!: string;
-
-  predictionResult: string = '';
-  queryInProgress: boolean = false;
-
-  constructor(private predictionsService: PredictionsService) { }
-
-  ngOnInit(): void { }
-
-  onSubmit(): void {
-    if (!this.selectedGender || !this.selectedAge || !this.selectedMaritalStatus
-        || !this.selectedOccupation || !this.selectedCityCategory || !this.selectedStayInCity) {
-      return;
-    }
-    this.queryInProgress = true;
-    this.predictionsService.getPrediction(this.selectedGender, this.selectedAge,
-                  this.selectedMaritalStatus, this.selectedOccupation,
-                  this.selectedCityCategory, this.selectedStayInCity,
-                  v => {
-                      this.queryInProgress = false;
-                      this.predictionResult = v;
-                  });
-  }
 }
