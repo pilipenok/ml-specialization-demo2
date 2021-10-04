@@ -140,7 +140,7 @@ def evaluator(
     # perform quality validation of a candidate model (compared to a baseline).
 
     eval_config = tfma.EvalConfig(
-        model_specs=[tfma.ModelSpec(label_key=features.LABEL_KEY)],
+        model_specs=[tfma.ModelSpec()],
         slicing_specs=[tfma.SlicingSpec()],
         metrics_specs=[
             tfma.MetricsSpec(metrics=[

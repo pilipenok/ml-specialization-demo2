@@ -4,13 +4,13 @@ This file defines environments for a TFX taxi pipeline.
 
 import tfx
 
-PIPELINE_NAME = 'tfx-pipeline-ml'
+PIPELINE_NAME = 'tfx-pipeline-ml-demo2-black-friday'
 GOOGLE_CLOUD_PROJECT = 'or2--epm-gcp-by-meetup2-t1iylu'
 GCS_BUCKET_NAME = 'epm-spec-black-friday'
 GOOGLE_CLOUD_REGION = 'us-central1'
 
 # Specifies data file directory. DATA_PATH should be a directory containing CSV files for CsvExampleGen in this example.
-DATA_PATH = f'gs://{GCS_BUCKET_NAME}/data/'
+DATA_PATH = f'gs://{GCS_BUCKET_NAME}/data_tiny/'
 LOCAL_DATA_PATH = '.'
 
 # Following image will be used to run pipeline components run if Kubeflow
@@ -102,7 +102,7 @@ GCP_VERTEX_AI_TRAINING_ARGS = {
     # calls into TFX's run_executor script (tfx/scripts/run_executor.py)
 
     'worker_pool_specs': [{
-        'machine_spec': {'machine_type': 'n1-standard-4', },
+        'machine_spec': {'machine_type': 'n1-highmem-16', },
         'replica_count': 1,
         'container_spec': {
             'image_uri': 'gcr.io/tfx-oss-public/tfx:{}'.format(tfx.__version__),

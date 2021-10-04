@@ -13,18 +13,31 @@ from tfx_bsl.public import tfxio
 from tensorflow_metadata.proto.v0 import schema_pb2
 from tensorflow_transform.tf_metadata import schema_utils
 
+import logging as logg
+logg.basicConfig(level="DEBUG")
+logger = logg.getLogger(__name__)
 
+
+TRAIN_BATCH_SIZE = 128
+EVAL_BATCH_SIZE = 128
+EPOCHS = 1
+TRAIN_NUM_STEPS = 100
+EVAL_NUM_STEPS = 10
 
 CATEGORICAL_FEATURE_KEYS = [
     'User_ID', 'Product_ID', 'Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years',
     'Marital_Status', 'Product_Category_1', 'Product_Category_2', 'Product_Category_3', 'Purchase'
 ]
 
-TRAIN_BATCH_SIZE = 128
-EVAL_BATCH_SIZE = 128
-EPOCHS = 3
-TRAIN_NUM_STEPS = 1000
-EVAL_NUM_STEPS = 100
+FEATURE_SPEC = {
+#     **{
+#         feature: tf.io.FixedLenFeature(shape=[1], dtype=tf.string)
+#         for feature in CATEGORICAL_FEATURE_KEYS
+#     },
+    'User_ID': tf.io.FixedLenFeature(shape=[1], dtype=tf.int64), 
+    'Product_ID': tf.io.FixedLenFeature(shape=[1], dtype=tf.string),
+}
+
 
 class UserProductModel(tfrs.Model):
     # We derive from a custom base class to help reduce boilerplate. Under the hood,
@@ -53,25 +66,21 @@ class UserProductModel(tfrs.Model):
         return self.task(user_embeddings, movie_embeddings)
 
 
-# data = pd.read_csv('/Users/andrey_gritsenko/PycharmProjects/ml-specialization-demo2/baseline/train.csv')
-# dataset = tf.data.Dataset.from_tensor_slices(dict(data))
-
-# users = dataset.map(lambda x: x['User_ID'])
-# products = dataset.map(lambda x: x['Product_ID'])
-# purchases = dataset.map(lambda x: {
-#     "User_ID": x['User_ID'],
-#     "Product_ID": x['Product_ID']
-# })
-
-
 def _build_recommendation_system(users_data: tf.data.Dataset, products_data: tf.data.Dataset) -> tf.keras.Model:
+    logger.debug("BUILD ML RECOMMENDATION SYSTEM")
+    logging.debug("BUILD ML RECOMMENDATION SYSTEM")
+    print("BUILD ML RECOMMENDATION SYSTEM")
     user_ids_vocabulary = tf.keras.layers.experimental.preprocessing.IntegerLookup(mask_token=None)
     user_ids_vocabulary.adapt(users_data)
-    logging.debug("INPUT LAYER FOR USERS")
+    logging.debug("CREATE INPUT LAYER FOR USERS")
+    logger.debug("CREATE INPUT LAYER FOR USERS")
+    print("CREATE INPUT LAYER FOR USERS")
 
     product_ids_vocabulary = tf.keras.layers.experimental.preprocessing.StringLookup(mask_token=None)
     product_ids_vocabulary.adapt(products_data)
-    logging.debug("INPUT LAYER FOR PRODUCTS")
+    logging.debug("CREATE INPUT LAYER FOR PRODUCTS")
+    logger.debug("CREATE INPUT LAYER FOR PRODUCTS")
+    print("CREATE INPUT LAYER FOR PRODUCTS")
 
     # Define user and product models.
     user_model = tf.keras.Sequential([
@@ -79,32 +88,31 @@ def _build_recommendation_system(users_data: tf.data.Dataset, products_data: tf.
         tf.keras.layers.Embedding(user_ids_vocabulary.vocabulary_size(), 64)
     ])
     logging.debug("DEFINE USER 'TOWER'")
+    logger.debug("DEFINE USER 'TOWER'")
+    print("DEFINE USER 'TOWER'")
 
     product_model = tf.keras.Sequential([
         product_ids_vocabulary,
         tf.keras.layers.Embedding(product_ids_vocabulary.vocabulary_size(), 64)
     ])
     logging.debug("DEFINE PRODUCT 'TOWER'")
+    logger.debug("DEFINE PRODUCT 'TOWER'")
+    print("DEFINE PRODUCT 'TOWER'")
 
     # Define your objectives.
     task = tfrs.tasks.Retrieval(
         metrics=tfrs.metrics.FactorizedTopK(products_data.batch(128).map(product_model))
     )
     logging.debug("DEFINE RETRIEVAL TASK")
+    logger.debug("DEFINE RETRIEVAL TASK")
+    print("DEFINE RETRIEVAL TASK")
 
     # Create a retrieval model.
     model = UserProductModel(user_model, product_model, task)
     logging.debug("CREATE USER-PRODUCT RECOMMENDATION MODEL")
+    logger.debug("CREATE USER-PRODUCT RECOMMENDATION MODEL")
+    print("CREATE USER-PRODUCT RECOMMENDATION MODEL")
     return model
-
-
-
-FEATURE_SPEC = {
-    **{
-        feature: tf.io.FixedLenFeature(shape=[1], dtype=tf.string)
-        for feature in CATEGORICAL_FEATURE_KEYS
-    },
-}
 
 
 def _input_fn(
@@ -145,66 +153,52 @@ def run_fn(fn_args: tfx.components.FnArgs):
     """
 
     logging.debug("ENTERING MODEL TRAINING SCRIPT")
+    logger.debug("ENTERING MODEL TRAINING SCRIPT")
+    print("ENTERING MODEL TRAINING SCRIPT")
 
     schema = get_schema()
     logging.debug("GET SCHEMA")
+    logger.debug("GET SCHEMA")
+    print("GET SCHEMA")
 
     train_dataset = _input_fn(fn_args.train_files, fn_args.data_accessor, schema, TRAIN_BATCH_SIZE)
     logging.debug("GET TRAIN DATASET")
+    logger.debug("GET TRAIN DATASET")
+    print("GET TRAIN DATASET")
     eval_dataset = _input_fn(fn_args.eval_files, fn_args.data_accessor, schema, EVAL_BATCH_SIZE)
     logging.debug("GET VALIDATION DATASET")
+    logger.debug("GET VALIDATION DATASET")
+    print("GET VALIDATION DATASET")
 
     mirrored_strategy = tf.distribute.MirroredStrategy()
     with mirrored_strategy.scope():
-        # if TASK == 'class':
-        #     loss = loss_sce(from_logits=True)
-        #     metrics = [
-        #         Accuracy(),
-        #         AUC(curve='ROC', name='ROC'),
-        #         AUC(curve='PR', name='PR'),
-        #         SparseCategoricalAccuracy(),
-        #         SparseCategoricalCrossentropy(from_logits=True)
-        #     ]
-        # elif TASK == 'regr':
-        #     loss = loss_mse() if BASELINE else loss_mape()
-        #     metrics = [
-        #         MeanSquaredError(),
-        #         MeanAbsolutePercentageError(),
-        #     ]
 
-        users = train_dataset.map(lambda x: x['User_ID'])
+        users = train_dataset.map(lambda x: x['User_ID']).unique()
         logging.debug("EXTRACT USERS DATA FROM TRAIN DATASET")
-        # users = train_dataset.unique()
-        products = train_dataset.map(lambda x: x['Product_ID'])
+        logger.debug("EXTRACT USERS DATA FROM TRAIN DATASET")
+        print("EXTRACT USERS DATA FROM TRAIN DATASET")
+        products = train_dataset.map(lambda x: x['Product_ID']).unique()
         logging.debug("EXTRACT PRODUCT DATA FROM TRAINING DATASET")
+        logger.debug("EXTRACT PRODUCT DATA FROM TRAINING DATASET")
+        print("EXTRACT PRODUCT DATA FROM TRAINING DATASET")
         purchases = train_dataset.map(lambda x: {
             "User_ID": x['User_ID'],
             "Product_ID": x['Product_ID']
         })
         logging.debug("EXTRACT PURCHASE DATA FROM TRAINING DATASET")
+        logger.debug("EXTRACT PURCHASE DATA FROM TRAINING DATASET")
+        print("EXTRACT PURCHASE DATA FROM TRAINING DATASET")
 
         model = _build_recommendation_system(users, products)
         logging.debug("BUILD MODEL")
+        logger.debug("BUILD MODEL")
+        print("BUILD MODEL")
         model.compile(optimizer=tf.keras.optimizers.Adagrad(0.5))
-        # model.compile(
-        #     loss=loss,
-        #     optimizer=tf.keras.optimizers.Adam(lr=LEARNING_RATE),
-        #     metrics=metrics
-        # )
         logging.debug("COMPILE MODEL")
+        logger.debug("COMPILE MODEL")
+        print("COMPILE MODEL")
     model.summary(print_fn=logging.info)
 
-    # earlystopping_callback = tf.keras.callbacks.EarlyStopping(
-    #     monitor='val_mean_squared_error' if BASELINE else 'val_mean_absolute_percentage_error',
-    #     patience=ES_PATIENCE,
-    #     restore_best_weights=True,
-    #     verbose=1
-    # )
-    # Write logs to path
-    # tb_logdir = os.path.join(
-    #     fn_args.model_run_dir[:fn_args.model_run_dir.rfind('/')],
-    #     f"{MODEL_NAME}-({fn_args.model_run_dir[fn_args.model_run_dir.rfind('/') + 1:]})"
-    # )
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
         # log_dir=tb_logdir,
         update_freq=10,
@@ -224,40 +218,24 @@ def run_fn(fn_args: tfx.components.FnArgs):
             tensorboard_callback,
         ]
     )
-    logging.debug("TRAIN MODEL FOR 3 EPOCHS")
+    logging.debug(f"TRAIN MODEL FOR {EPOCHS} EPOCHS")
+    logger.debug(f"TRAIN MODEL FOR {EPOCHS} EPOCHS")
+    print(f"TRAIN MODEL FOR {EPOCHS} EPOCHS")
 
     # Use brute-force search to set up retrieval using the trained representations.
     index = tfrs.layers.factorized_top_k.BruteForce(model.user_model)
     index.index_from_dataset(
         products.batch(100).map(lambda title: (title, model.product_model(title))))
     logging.debug("DO SOME BRUTE-FORCE STUFF")
+    logger.debug("DO SOME BRUTE-FORCE STUFF")
+    print("DO SOME BRUTE-FORCE STUFF")
 
     # Get some recommendations.
     _, titles = index(np.array(list(users.take(1).as_numpy_iterator())))
     logging.info(f"Top 3 recommendations for user {list(users.take(1).as_numpy_iterator())[0]}: {titles[0, :3]}")
+    logger.info(f"Top 3 recommendations for user {list(users.take(1).as_numpy_iterator())[0]}: {titles[0, :3]}")
+    print(f"Top 3 recommendations for user {list(users.take(1).as_numpy_iterator())[0]}: {titles[0, :3]}")
 
-    # if BASELINE:
-    #     logging.info("Baseline DNN architecture:\n"
-    #                  f"\tHIDDEN_UNITS_BASE_DEEP = {HIDDEN_UNITS_BASE_DEEP}\n"
-    #                  f"\tHIDDEN_UNITS_BASE_CONCAT = {HIDDEN_UNITS_BASE_CONCAT}"
-    #                  )
-    # else:
-    #     logging.info(f"Advanced DNN architecture ("
-    #                  f"{'with' if REGULARIZE else 'without'} regularization, "
-    #                  f"{'with' if DROPOUT else 'without'} dropout):\n"
-    #                  f"\tHIDDEN_UNITS_ADV_DEEP = {HIDDEN_UNITS_ADV_DEEP}\n"
-    #                  f"\tHIDDEN_UNITS_ADV_EMBED = {HIDDEN_UNITS_ADV_EMBED}\n"
-    #                  f"\tHIDDEN_UNITS_ADV_MIX = {HIDDEN_UNITS_ADV_MIX}\n"
-    #                  f"\tHIDDEN_UNITS_ADV_WIDE = {HIDDEN_UNITS_ADV_WIDE}\n"
-    #                  f"\tHIDDEN_UNITS_ADV_CONCAT = {HIDDEN_UNITS_ADV_CONCAT}"
-    #                  )
-    # logging.info(f"TensorBoard log directory: {tb_logdir}")
-
-    # signatures = {
-    #     'serving_default':
-    #         _get_serve_tf_examples_fn(model, tf_transform_output).get_concrete_function(
-    #             tf.TensorSpec(shape=[None],dtype=tf.string,name='examples')),
-    # }
     model.save(fn_args.serving_model_dir, save_format='tf')
 
 
