@@ -90,6 +90,6 @@ def create_pipeline(
         pipeline_root=pipeline_root,
         components=components,
         # Change this value to control caching of execution results. Default value
-        enable_cache=False,
+        enable_cache=True,
         metadata_connection_config=metadata_connection_config,
     )

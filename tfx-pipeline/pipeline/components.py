@@ -100,6 +100,7 @@ def trainer_vertex(
 ) -> tfx.components.Trainer:
     args = dict(
         module_file=configs.MODULE_FILE,
+        #run_fn=configs.RUN_FN,
         train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
         eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
         custom_config={

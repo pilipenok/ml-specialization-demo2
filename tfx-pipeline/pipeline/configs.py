@@ -19,7 +19,7 @@ LOCAL_DATA_PATH = '.'
 PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
 
 PREPROCESSING_FN = 'models.preprocessing.preprocessing_fn'
-RUN_FN = 'models.keras.baseline_advanced.model.run_fn'
+RUN_FN = 'models.baseline.model.run_fn'
 MODULE_FILE = f'gs://{GCS_BUCKET_NAME}/model.py'
 SERVING_MODEL_DIR = f'gs://{GCS_BUCKET_NAME}/serving_model'
 
@@ -105,7 +105,7 @@ GCP_VERTEX_AI_TRAINING_ARGS = {
         'machine_spec': {'machine_type': 'n1-standard-4', },
         'replica_count': 1,
         'container_spec': {
-            'image_uri': 'gcr.io/tfx-oss-public/tfx:{}'.format(tfx.__version__),
+            'image_uri': 'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/taxi-pipeline-vertex',
         },
     }],
 }
