@@ -189,7 +189,7 @@ def run_fn(fn_args: tfx.components.FnArgs):
     #     f"baseline-({fn_args.model_run_dir[fn_args.model_run_dir.rfind('/') + 1:]})"
     # )
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
-        log_dir=tb_logdir,
+        # log_dir=tb_logdir,
         update_freq=10,
         histogram_freq=1,
         embeddings_freq=1,
