@@ -5,6 +5,7 @@ This file defines environments for a TFX taxi pipeline.
 import tfx
 
 PIPELINE_NAME = 'tfx-pipeline-ml-demo2-black-friday'
+MODEL_NAME = 'black-friday-model'
 GOOGLE_CLOUD_PROJECT = 'or2--epm-gcp-by-meetup2-t1iylu'
 GCS_BUCKET_NAME = 'epm-spec-black-friday'
 GOOGLE_CLOUD_REGION = 'us-central1'
@@ -16,7 +17,8 @@ LOCAL_DATA_PATH = '.'
 # Following image will be used to run pipeline components run if Kubeflow
 # Pipelines used.
 # This image will be automatically built by CLI if we use --build-image flag.
-PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
+# PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
+PIPELINE_IMAGE = 'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/taxi-pipeline-vertex'
 
 PREPROCESSING_FN = 'models.preprocessing.preprocessing_fn'
 RUN_FN = 'models.baseline.model.run_fn'
@@ -51,14 +53,14 @@ GCP_AI_PLATFORM_TRAINING_ARGS = {
 # Cloud AI Platform. For the full set of parameters supported by Google Cloud AI
 # Platform, refer to https://cloud.google.com/ml-engine/reference/rest/v1/projects.models
 GCP_AI_PLATFORM_SERVING_ARGS = {
-    'model_name': PIPELINE_NAME.replace('-', '_'),  # '-' is not allowed.
+    'model_name': MODEL_NAME,
     'project_id': GOOGLE_CLOUD_PROJECT,
     # The region to use when serving the model. See available regions here:
     # https://cloud.google.com/ml-engine/docs/regions
     # Note that serving currently only supports a single region:
     # https://cloud.google.com/ml-engine/reference/rest/v1/projects.models#Model
     'regions': [GOOGLE_CLOUD_REGION],
-    'endpoint_name': 'chicago_taxi_model_endoint',
+    'endpoint_name': f'{MODEL_NAME}_endoint',
     'min_replica_count': 1,
     'max_replica_count': 2,
     'machine_type': 'n1-standard-2'
@@ -95,9 +97,9 @@ GCP_VERTEX_AI_TRAINING_ARGS = {
     # https://cloud.google.com/ml-engine/docs/containers-overview
     # You can specify a custom container here. If not specified, TFX will use
     # a public container image matching the installed version of TFX.
-    # 'masterConfig': {
-    #  'imageUri': PIPELINE_IMAGE
-    # },
+    'masterConfig': {
+        'imageUri': PIPELINE_IMAGE
+    },
     # Note that if you do specify a custom container, ensure the entrypoint
     # calls into TFX's run_executor script (tfx/scripts/run_executor.py)
 
@@ -149,3 +151,5 @@ GCP_AI_PLATFORM_TUNING_ARGS = {
     },
     #'hyperparameters': HYPERPARAMETERS
 }
+
+pubsub_deploy_topic = 'black-friday-training-finish'

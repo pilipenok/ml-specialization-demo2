@@ -15,6 +15,10 @@ from tfx.extensions.google_cloud_ai_platform.tuner.executor import TUNING_ARGS_K
 from tfx import types
 from typing import Optional
 from tfx.types.standard_artifacts import Model, ModelBlessing
+from tfx.dsl.component.experimental.decorators import component
+
+from google.cloud import pubsub
+import json
 
 from pipeline import configs
 from models.baseline import features
@@ -229,3 +233,21 @@ def tuner(
         args.update(base_model=base_model)
 
     return tfx.extensions.google_cloud_ai_platform.Tuner(**args).with_id("HyperparametersTuner")
+
+
+@component
+def finish_pubsub_event():
+    # My simple custom pubsub  component.
+    try:
+        topic = configs.pubsub_deploy_topic
+
+        print(f"Publishing to PubSub topic {topic}...")
+        publicher = pubsub.PublisherClient()
+        topic = publicher.topic_path(configs.GOOGLE_CLOUD_PROJECT, topic)
+        #data = data if type(data) is str else json.dumps(data)
+        data = "deploy message"
+        publicher.publish(topic, data.encode('utf-8'))
+    except Exception as e:
+        print(f"pubsub_send error: {e}")
+
+    return {}

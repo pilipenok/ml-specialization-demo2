@@ -29,7 +29,7 @@ FEATURE_SPEC = {
 #         feature: tf.io.FixedLenFeature(shape=[1], dtype=tf.string)
 #         for feature in CATEGORICAL_FEATURE_KEYS
 #     },
-    'User_ID': tf.io.FixedLenFeature(shape=[1], dtype=tf.int64), 
+    'User_ID': tf.io.FixedLenFeature(shape=[1], dtype=tf.int64),
     'Product_ID': tf.io.FixedLenFeature(shape=[1], dtype=tf.string),
 }
 
@@ -89,6 +89,9 @@ def _build_recommendation_system(users_data: tf.data.Dataset, products_data: tf.
     #print(product_model.summary())
 
     # Define your objectives.
+    print("products_data=", products_data.get_shape())
+    print("product_model=", product_model.get_shape())
+    print("products_data.map(product_model)=", products_data.map(product_model).get_shape())
     task = tfrs.tasks.Retrieval(
         metrics=tfrs.metrics.FactorizedTopK(products_data.map(product_model))
     )
@@ -142,6 +145,18 @@ def _input_fn_lookup(
     ).map(reshape)
 
 
+def _input_fn_lookup(
+        file_pattern: List[str],
+        data_accessor: tfx.components.DataAccessor,
+        schema: schema_pb2.Schema,
+        batch_size: int) -> tf.data.Dataset:
+    return data_accessor.tf_dataset_factory(
+        file_pattern,
+        tfxio.TensorFlowDatasetOptions(batch_size=batch_size),
+        schema=schema
+    ).squeeze()
+
+
 def get_schema():
     return schema_utils.schema_from_feature_spec(FEATURE_SPEC)
 
@@ -181,7 +196,7 @@ def run_fn(fn_args: tfx.components.FnArgs):
         print("BUILD MODEL")
         model.compile(optimizer=tf.keras.optimizers.Adagrad(0.5))
         print("COMPILE MODEL")
-        
+
     # model.summary()
 
     # tb_logdir = os.path.join(
@@ -207,14 +222,14 @@ def run_fn(fn_args: tfx.components.FnArgs):
         ]
     )
     print(f"TRAIN MODEL FOR {EPOCHS} EPOCHS")
-    
+
     index = tfrs.layers.factorized_top_k.BruteForce(model.user_model)
     index.index_from_dataset(
         products.map(lambda title: (title, model.product_model(title))))
     #print(index.summary())
 
     #index.save(fn_args.serving_model_dir, save_format='tf')
-    
+
     tf.saved_model.save(
         index,
         fn_args.serving_model_dir,
