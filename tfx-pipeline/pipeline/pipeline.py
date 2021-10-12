@@ -71,7 +71,7 @@ def create_pipeline(
                      #model_blessing=model_blessing
                      )
 
-    _finish = ps.finish_pubsub_event()
+    _finish = pc.finish_pubsub_event()
     
     components = [
         _example_gen,
