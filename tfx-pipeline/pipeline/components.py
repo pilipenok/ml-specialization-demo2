@@ -236,16 +236,16 @@ def tuner(
 
 
 @component
-def pubsub(
-    topic: str,
-    data = None
-):
+def finish_pubsub_event():
     # My simple custom pubsub  component.
     try:
-        print(f"Publishing to PubSub topic {topic}: {data}")
+        topic = configs.pubsub_deploy_topic
+
+        print(f"Publishing to PubSub topic {topic}...")
         publicher = pubsub.PublisherClient()
         topic = publicher.topic_path(configs.GOOGLE_CLOUD_PROJECT, topic)
-        data = data if type(data) is str else json.dumps(data)
+        #data = data if type(data) is str else json.dumps(data)
+        data = "deploy message"
         publicher.publish(topic, data.encode('utf-8'))
     except Exception as e:
         print(f"pubsub_send error: {e}")

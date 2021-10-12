@@ -5,6 +5,7 @@ This file defines environments for a TFX taxi pipeline.
 import tfx
 
 PIPELINE_NAME = 'tfx-pipeline-ml-demo2-black-friday'
+MODEL_NAME = 'black-friday-model'
 GOOGLE_CLOUD_PROJECT = 'or2--epm-gcp-by-meetup2-t1iylu'
 GCS_BUCKET_NAME = 'epm-spec-black-friday'
 GOOGLE_CLOUD_REGION = 'us-central1'
@@ -52,14 +53,14 @@ GCP_AI_PLATFORM_TRAINING_ARGS = {
 # Cloud AI Platform. For the full set of parameters supported by Google Cloud AI
 # Platform, refer to https://cloud.google.com/ml-engine/reference/rest/v1/projects.models
 GCP_AI_PLATFORM_SERVING_ARGS = {
-    'model_name': PIPELINE_NAME.replace('-', '_'),  # '-' is not allowed.
+    'model_name': MODEL_NAME,
     'project_id': GOOGLE_CLOUD_PROJECT,
     # The region to use when serving the model. See available regions here:
     # https://cloud.google.com/ml-engine/docs/regions
     # Note that serving currently only supports a single region:
     # https://cloud.google.com/ml-engine/reference/rest/v1/projects.models#Model
     'regions': [GOOGLE_CLOUD_REGION],
-    'endpoint_name': 'chicago_taxi_model_endoint',
+    'endpoint_name': f'{MODEL_NAME}_endoint',
     'min_replica_count': 1,
     'max_replica_count': 2,
     'machine_type': 'n1-standard-2'
@@ -150,3 +151,5 @@ GCP_AI_PLATFORM_TUNING_ARGS = {
     },
     #'hyperparameters': HYPERPARAMETERS
 }
+
+pubsub_deploy_topic = 'black-friday-training-finish'
