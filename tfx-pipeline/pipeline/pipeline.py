@@ -72,6 +72,7 @@ def create_pipeline(
                      )
 
     _finish = pc.finish_pubsub_event()
+    _finish.add_upstream_node(_pusher)
     
     components = [
         _example_gen,
