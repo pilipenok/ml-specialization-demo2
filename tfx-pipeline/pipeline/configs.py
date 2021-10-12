@@ -16,7 +16,8 @@ LOCAL_DATA_PATH = '.'
 # Following image will be used to run pipeline components run if Kubeflow
 # Pipelines used.
 # This image will be automatically built by CLI if we use --build-image flag.
-PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
+# PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
+PIPELINE_IMAGE = 'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/taxi-pipeline-vertex'
 
 PREPROCESSING_FN = 'models.preprocessing.preprocessing_fn'
 RUN_FN = 'models.baseline.model.run_fn'
@@ -95,9 +96,9 @@ GCP_VERTEX_AI_TRAINING_ARGS = {
     # https://cloud.google.com/ml-engine/docs/containers-overview
     # You can specify a custom container here. If not specified, TFX will use
     # a public container image matching the installed version of TFX.
-    # 'masterConfig': {
-    #  'imageUri': PIPELINE_IMAGE
-    # },
+    'masterConfig': {
+        'imageUri': PIPELINE_IMAGE
+    },
     # Note that if you do specify a custom container, ensure the entrypoint
     # calls into TFX's run_executor script (tfx/scripts/run_executor.py)
 
