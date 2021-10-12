@@ -69,9 +69,6 @@ def _build_recommendation_system(users_data: tf.data.Dataset, products_data: tf.
 
     product_ids_vocabulary = tf.keras.layers.experimental.preprocessing.StringLookup(mask_token=None)
     product_ids_vocabulary.adapt(products_data)
-    print('!!!',products_data)
-    print(next(products_data.as_numpy_iterator()))
-    print(product_ids_vocabulary.vocabulary_size())
     print("CREATE INPUT LAYER FOR PRODUCTS")
 
     # Define user and product models.
@@ -89,9 +86,6 @@ def _build_recommendation_system(users_data: tf.data.Dataset, products_data: tf.
     #print(product_model.summary())
 
     # Define your objectives.
-    print("products_data=", products_data.get_shape())
-    print("product_model=", product_model.get_shape())
-    print("products_data.map(product_model)=", products_data.map(product_model).get_shape())
     task = tfrs.tasks.Retrieval(
         metrics=tfrs.metrics.FactorizedTopK(products_data.map(product_model))
     )
@@ -143,18 +137,6 @@ def _input_fn_lookup(
         tfxio.TensorFlowDatasetOptions(batch_size=batch_size, num_epochs=1, shuffle=False),
         schema=schema
     ).map(reshape)
-
-
-def _input_fn_lookup(
-        file_pattern: List[str],
-        data_accessor: tfx.components.DataAccessor,
-        schema: schema_pb2.Schema,
-        batch_size: int) -> tf.data.Dataset:
-    return data_accessor.tf_dataset_factory(
-        file_pattern,
-        tfxio.TensorFlowDatasetOptions(batch_size=batch_size),
-        schema=schema
-    ).squeeze()
 
 
 def get_schema():
