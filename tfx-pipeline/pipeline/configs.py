@@ -5,7 +5,7 @@ This file defines environments for a TFX taxi pipeline.
 import tfx
 
 PIPELINE_NAME = 'tfx-pipeline-ml-demo2-black-friday'
-MODEL_NAME = 'black-friday-model'
+MODEL_NAME = 'black_friday_model'
 GOOGLE_CLOUD_PROJECT = 'or2--epm-gcp-by-meetup2-t1iylu'
 GCS_BUCKET_NAME = 'epm-spec-black-friday'
 GOOGLE_CLOUD_REGION = 'us-central1'
@@ -25,8 +25,8 @@ RUN_FN = 'models.baseline.model.run_fn'
 MODULE_FILE = f'gs://{GCS_BUCKET_NAME}/model.py'
 SERVING_MODEL_DIR = f'gs://{GCS_BUCKET_NAME}/serving_model'
 
-TRAIN_NUM_STEPS = 100
-EVAL_NUM_STEPS = 10
+TRAIN_NUM_STEPS = 1
+EVAL_NUM_STEPS = 1
 # EVAL_ACCURACY_THRESHOLD = 0.6
 # TRAIN_BATCH_SIZE = 16
 # EVAL_BATCH_SIZE = 16
@@ -52,7 +52,7 @@ GCP_AI_PLATFORM_TRAINING_ARGS = {
 # A dict which contains the serving job parameters to be passed to Google
 # Cloud AI Platform. For the full set of parameters supported by Google Cloud AI
 # Platform, refer to https://cloud.google.com/ml-engine/reference/rest/v1/projects.models
-GCP_AI_PLATFORM_SERVING_ARGS = {
+GCP_VERTEX_SERVING_ARGS = {
     'model_name': MODEL_NAME,
     'project_id': GOOGLE_CLOUD_PROJECT,
     # The region to use when serving the model. See available regions here:
@@ -63,7 +63,17 @@ GCP_AI_PLATFORM_SERVING_ARGS = {
     'endpoint_name': f'{MODEL_NAME}_endoint',
     'min_replica_count': 1,
     'max_replica_count': 2,
-    'machine_type': 'n1-standard-2'
+    'machine_type': 'n1-standard-4'
+}
+GCP_CAIP_SERVING_ARGS = {
+    'model_name': MODEL_NAME,
+    'project_id': GOOGLE_CLOUD_PROJECT,
+    # The region to use when serving the model. See available regions here:
+    # https://cloud.google.com/ml-engine/docs/regions
+    # Note that serving currently only supports a single region:
+    # https://cloud.google.com/ml-engine/reference/rest/v1/projects.models#Model
+    'regions': [GOOGLE_CLOUD_REGION],
+    'machine_type': 'mls1-c1-m2'
 }
 # If you are looking for the url to query the Endpoint,
 # that's in a property pushed_destination of the pushed_model output artifact:

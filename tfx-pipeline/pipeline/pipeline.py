@@ -11,6 +11,7 @@ from tfx.orchestration import pipeline
 from ml_metadata.proto import metadata_store_pb2
 
 import pipeline.components as pc
+from pipeline import configs
 
 
 def create_pipeline(
@@ -71,8 +72,8 @@ def create_pipeline(
                      #model_blessing=model_blessing
                      )
 
-    _finish = pc.finish_pubsub_event()
-    _finish.add_upstream_node(_pusher)
+    _finish = pc.finish_pubsub_event(topic=configs.pubsub_deploy_topic, project=configs.GOOGLE_CLOUD_PROJECT)
+    _finish.add_upstream_node(_trainer)
     
     components = [
         _example_gen,
@@ -82,7 +83,7 @@ def create_pipeline(
         _trainer,
         #_model_resolver,
         #_evaluator,
-        _pusher,
+        #_pusher,
         _finish
     ]
 

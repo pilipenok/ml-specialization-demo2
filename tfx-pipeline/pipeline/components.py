@@ -13,9 +13,10 @@ from tfx.extensions.google_cloud_ai_platform.pusher.executor import VERTEX_CONTA
 from tfx.extensions.google_cloud_ai_platform.tuner.executor import TUNING_ARGS_KEY
 
 from tfx import types
-from typing import Optional
+from typing import Optional, Text
 from tfx.types.standard_artifacts import Model, ModelBlessing
 from tfx.dsl.component.experimental.decorators import component
+from tfx.dsl.component.experimental.annotations import Parameter
 
 from google.cloud import pubsub
 import json
@@ -176,7 +177,7 @@ def pusher(
         model=model,
         custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
         custom_config={
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_AI_PLATFORM_SERVING_ARGS
+            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_CAIP_SERVING_ARGS
         }
     )
     if model_blessing:
@@ -197,7 +198,7 @@ def pusher_vertex(
             VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
             VERTEX_CONTAINER_IMAGE_URI_KEY: 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest',
             # See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_AI_PLATFORM_SERVING_ARGS
+            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_VERTEX_SERVING_ARGS
         }
     )
     if model_blessing:
@@ -236,18 +237,20 @@ def tuner(
 
 
 @component
-def finish_pubsub_event():
+def finish_pubsub_event(
+    topic: Parameter[str], 
+    project: Parameter[str]
+):
     # My simple custom pubsub  component.
     try:
-        topic = configs.pubsub_deploy_topic
-
+        from google.cloud import pubsub
+        import json
+        
         print(f"Publishing to PubSub topic {topic}...")
         publicher = pubsub.PublisherClient()
-        topic = publicher.topic_path(configs.GOOGLE_CLOUD_PROJECT, topic)
-        #data = data if type(data) is str else json.dumps(data)
+        topic = publicher.topic_path(project, topic)
         data = "deploy message"
-        publicher.publish(topic, data.encode('utf-8'))
+        publicher.publish(topic, json.dumps(data).encode('utf-8'))
     except Exception as e:
         print(f"pubsub_send error: {e}")
-
     return {}
