@@ -8,7 +8,8 @@ import tensorflow_model_analysis as tfma
 
 from tfx.extensions.google_cloud_ai_platform.trainer import executor as ai_platform_trainer_executor
 from tfx.extensions.google_cloud_ai_platform.pusher import executor as ai_platform_pusher_executor
-from tfx.extensions.google_cloud_ai_platform.trainer.executor import ENABLE_VERTEX_KEY, VERTEX_REGION_KEY, TRAINING_ARGS_KEY
+from tfx.extensions.google_cloud_ai_platform.trainer.executor import ENABLE_VERTEX_KEY, VERTEX_REGION_KEY, \
+    TRAINING_ARGS_KEY
 from tfx.extensions.google_cloud_ai_platform.pusher.executor import VERTEX_CONTAINER_IMAGE_URI_KEY
 from tfx.extensions.google_cloud_ai_platform.tuner.executor import TUNING_ARGS_KEY
 
@@ -34,33 +35,33 @@ def example_gen() -> tfx.components.CsvExampleGen:
 
 # Computes statistics over data for visualization and example validation.
 def statistics_gen(
-    examples: types.Channel
+        examples: types.Channel
 ) -> tfx.components.StatisticsGen:
     return tfx.components.StatisticsGen(examples=examples)
 
 
 # Generates schema based on statistics files.
 def schema_gen(
-    statistics: types.Channel
+        statistics: types.Channel
 ) -> tfx.components.SchemaGen:
     return tfx.components.SchemaGen(statistics=statistics, infer_feature_shape=True)
 
 
 # Performs anomaly detection based on statistics and data schema.
 def example_validator(
-    statistics: types.Channel,
-    schema: types.Channel
+        statistics: types.Channel,
+        schema: types.Channel
 ) -> tfx.components.ExampleValidator:
     return tfx.components.ExampleValidator(statistics=statistics, schema=schema)
 
 
 # Performs transformations and feature engineering in training and serving.
 def transform(
-    examples: types.Channel,
-    schema: types.Channel
+        examples: types.Channel,
+        schema: types.Channel
 ) -> tfx.components.Transform:
     return tfx.components.Transform(
-        #preprocessing_fn=configs.PREPROCESSING_FN,
+        # preprocessing_fn=configs.PREPROCESSING_FN,
         module_file=configs.MODULE_FILE,
         examples=examples,
         schema=schema,
@@ -69,13 +70,13 @@ def transform(
 
 # Trains a model via Kubeflow pipelines
 def trainer(
-    examples: Optional[types.Channel] = None,
-    schema: Optional[types.Channel] = None,
-    transform_graph: Optional[types.Channel] = None,
-    hyperparameters: Optional[types.Channel] = None
+        examples: Optional[types.Channel] = None,
+        schema: Optional[types.Channel] = None,
+        transform_graph: Optional[types.Channel] = None,
+        hyperparameters: Optional[types.Channel] = None
 ) -> tfx.components.Trainer:
     args = dict(
-        #run_fn=configs.RUN_FN,
+        # run_fn=configs.RUN_FN,
         module_file=configs.MODULE_FILE,
         train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
         eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
@@ -98,14 +99,14 @@ def trainer(
 
 # See https://www.tensorflow.org/tfx/tutorials/tfx/gcp/vertex_pipelines_vertex_training for tutorial example
 def trainer_vertex(
-    examples: Optional[types.Channel] = None,
-    schema: Optional[types.Channel] = None,
-    transform_graph: Optional[types.Channel] = None,
-    hyperparameters: Optional[types.Channel] = None
+        examples: Optional[types.Channel] = None,
+        schema: Optional[types.Channel] = None,
+        transform_graph: Optional[types.Channel] = None,
+        hyperparameters: Optional[types.Channel] = None
 ) -> tfx.components.Trainer:
     args = dict(
         module_file=configs.MODULE_FILE,
-        #run_fn=configs.RUN_FN,
+        # run_fn=configs.RUN_FN,
         train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
         eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
         custom_config={
@@ -138,15 +139,15 @@ def model_resolver():
 
 
 def evaluator(
-    examples: types.Channel,
-    model: Optional[types.Channel] = None,
-    baseline_model: Optional[types.Channel] = None
+        examples: types.Channel,
+        model: Optional[types.Channel] = None,
+        baseline_model: Optional[types.Channel] = None
 ):
     # Uses TFMA to compute a evaluation statistics over features of a model and
     # perform quality validation of a candidate model (compared to a baseline).
 
     eval_config = tfma.EvalConfig(
-        #model_specs=[tfma.ModelSpec(label_key=features.LABEL_KEY)],
+        # model_specs=[tfma.ModelSpec(label_key=features.LABEL_KEY)],
         slicing_specs=[tfma.SlicingSpec()],
         metrics_specs=[
             tfma.MetricsSpec(metrics=[
@@ -170,8 +171,8 @@ def evaluator(
 
 
 def pusher(
-    model: types.Channel,
-    model_blessing: Optional[types.Channel] = None
+        model: types.Channel,
+        model_blessing: Optional[types.Channel] = None
 ) -> tfx.components.Pusher:
     args = dict(
         model=model,
@@ -187,8 +188,8 @@ def pusher(
 
 
 def pusher_vertex(
-    model: types.Channel,
-    model_blessing: Optional[types.Channel] = None
+        model: types.Channel,
+        model_blessing: Optional[types.Channel] = None
 ):
     args = dict(
         model=model,
@@ -208,10 +209,10 @@ def pusher_vertex(
 
 
 def tuner(
-    examples: types.Channel,
-    schema: Optional[types.Channel] = None,
-    transform_graph: Optional[types.Channel] = None,
-    base_model: Optional[types.Channel] = None,
+        examples: types.Channel,
+        schema: Optional[types.Channel] = None,
+        transform_graph: Optional[types.Channel] = None,
+        base_model: Optional[types.Channel] = None,
 ):
     args = dict(
         module_file=configs.MODULE_FILE,
@@ -238,14 +239,14 @@ def tuner(
 
 @component
 def finish_pubsub_event(
-    topic: Parameter[str], 
+    topic: Parameter[str],
     project: Parameter[str]
 ):
     # My simple custom pubsub  component.
     try:
         from google.cloud import pubsub
         import json
-        
+
         print(f"Publishing to PubSub topic {topic}...")
         publicher = pubsub.PublisherClient()
         topic = publicher.topic_path(project, topic)
