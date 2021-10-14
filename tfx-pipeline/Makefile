@@ -6,7 +6,7 @@ PIPELINE_NAME ?= tfx-pipeline-ml
 create:
 	tfx pipeline create --pipeline-path=kubeflow_runner.py --endpoint=${ENDPOINT} --build-image
 
-build:
+update:
 	tfx pipeline update --pipeline-path=kubeflow_runner.py --endpoint=${ENDPOINT} --build-image
 
 create:
@@ -15,7 +15,9 @@ create:
 run:
 	tfx run create --pipeline-name ${PIPELINE_NAME} --endpoint=${ENDPOINT}
     
+build:
+	gcloud builds submit --tag us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/black-friday-pipeline-vertex --timeout 3600
+
 
 create-run: create run
-build-run: build run
-
+update-run: update run
