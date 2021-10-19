@@ -1,8 +1,5 @@
 <div class="dataset-details-content">
   <h3>{{ (item | async)?.name }}</h3>
-  <div class="status in-progress" *ngIf="(item | async)?.status == 1">Training in progress</div>
-  <div class="status ready" *ngIf="(item | async)?.status == 2">Training complete</div>
-  <div class="status error" *ngIf="(item | async)?.status == -1">Error</div>
   <mat-tab-group mat-align-tabs="start" class="mat-elevation-z8">
     <mat-tab label="Details">
       <mat-card>

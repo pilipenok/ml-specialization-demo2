@@ -25,12 +25,20 @@ export class PredictionsService {
 
   constructor(private fns: AngularFireFunctions) { }
 
-  getPrediction(gender: string, age: string, maritalStatus: string, occupation: string,
+  getPrediction(gender: string, age: string, maritalStatus: number, occupation: number,
                 cityCategory: string, stayInCityYears: string,
                 onSuccessFn: (values: Row[]) => void,
                 onErrorFn: (error: string) => void,
                 onComplete: () => void) {
-    const response: Observable<any> = this.getPredictionsFunction({ name: 'some-data' });
+    const response: Observable<any> = this.getPredictionsFunction({
+      gender: gender,
+      age: age,
+      maritalStatus: maritalStatus,
+      occupation: occupation,
+      cityCategory: cityCategory,
+      stayInCityYears: stayInCityYears
+    });
+
     response.subscribe(
       (encodedPromise) => {
         const values = this.extractValues(encodedPromise);

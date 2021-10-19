@@ -8,10 +8,9 @@
 
 const functions = require("firebase-functions");
 
-async function predictCustomTrainedModel() {
+async function predictCustomTrainedModel(data) {
   const util = require('util');
-  const {PredictionServiceClient} = require('@google-cloud/aiplatform');
-
+  const {PredictionServiceClient, helpers} = require('@google-cloud/aiplatform');
   const clientOptions = {
     apiEndpoint: 'us-central1-aiplatform.googleapis.com',
   };
@@ -23,13 +22,16 @@ async function predictCustomTrainedModel() {
       fields: {},
     },
   };
-  const instance = {
-    structValue: {
-      fields: {
-        input_1: {numberValue: 1},
-      },
-    },
-  };
+
+  const instance = helpers.toValue({
+    "Gender": [ data.gender ],
+    "Age": [ data.age ],
+    "Occupation": [ data.occupation ],
+    "City_Category": [ data.cityCategory ],
+    "Stay_In_Current_City_Years": [ data.stayInCityYears ],
+    "Marital_Status": [ data.maritalStatus ],
+    "Product_ID": ['']
+  });
 
   const instances = [instance];
   const request = {
@@ -48,6 +50,6 @@ exports.getPredictions = functions.https.onCall(async(data, context) => {
       error: 'Unauthorized'
     };
   }
-  const res = predictCustomTrainedModel();
+  const res = predictCustomTrainedModel(data);
   return res;
 });

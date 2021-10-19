@@ -88,9 +88,9 @@ import { ModelComponent } from './components/model/model.component';
   ],
   providers: [
     { provide: BUCKET, useValue: 'epm-spec-black-friday' },
-    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
-    { provide: USE_STORAGE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 9199] : undefined },
-    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined },
+    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useFirestoreEmulators ? ['localhost', 8080] : undefined },
+    { provide: USE_STORAGE_EMULATOR, useValue: environment.useStorageEmulators ? ['localhost', 9199] : undefined },
+    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useFunctionsEmulators ? ['localhost', 5001] : undefined },
     { provide: REGION, useValue: 'us-central1' },
   ],
   bootstrap: [AppComponent]

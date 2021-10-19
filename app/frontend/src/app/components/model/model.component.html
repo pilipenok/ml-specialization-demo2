@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="modelStatus == 2; else modelNotReadyBlock">
   <mat-card-title>Model API</mat-card-title>
   <mat-card-content>
     <table>
@@ -78,7 +78,7 @@
   </mat-card-footer>
 </mat-card>
 
-<mat-card>
+<mat-card *ngIf="modelStatus == 2">
   <mat-card-title>Result</mat-card-title>
   <mat-card-content>
 
@@ -103,3 +103,13 @@
 
   </mat-card-content>
 </mat-card>
+
+<ng-template #modelNotReadyBlock>
+<mat-card>
+  <mat-card-title>Model API</mat-card-title>
+  <mat-card-content>
+    <div class="status in-progress" *ngIf="modelStatus == 1">Training in progress</div>
+    <div class="status error" *ngIf="modelStatus == -1"> {{modelError}} </div>
+  </mat-card-content>
+</mat-card>
+</ng-template>

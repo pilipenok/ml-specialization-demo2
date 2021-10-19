@@ -20,11 +20,11 @@ export class DatasetDaoService {
   readonly USERS_COLLECTION_NAME = 'users';
   readonly DATASET_COLLECTION_NAME = 'datasets';
 
-  private userDoc: AngularFirestoreDocument;
+  private userDoc: AngularFirestoreDocument<User>;
   private datasetsCollection: AngularFirestoreCollection<Dataset>;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) {
-    this.userDoc = this.afs.doc<Dataset>(this.USERS_COLLECTION_NAME + '/' + auth.getUserId());
+    this.userDoc = this.afs.doc<User>(this.USERS_COLLECTION_NAME + '/' + auth.getUserId());
     this.datasetsCollection = this.userDoc.collection<Dataset>(this.DATASET_COLLECTION_NAME);
   }
   
@@ -40,7 +40,6 @@ export class DatasetDaoService {
       id: id,
       name: name,
       description: description,
-      status: 1,
       creation_timestamp: new Date(),
       file_name: filename,
       file_type: type,
@@ -60,15 +59,32 @@ export class DatasetDaoService {
   deleteDataset(id: string) {
     this.datasetsCollection.doc(id).delete();
   }
+
+  getUserData(): Observable<User | undefined> {
+    return this.userDoc.valueChanges();
+  }
+
+  resetModelState() {
+    this.userDoc.update({model_state: { status: 1, error: '' }});
+  }
 }
 
 export interface Dataset {
   id: string;
   name: string;
   description: string;
-  status: number;
   creation_timestamp: Date;
   file_name: string;
   file_type: string;
   file_size: number;
+}
+
+export interface User {
+  model_state: ModelInfo;
+  ml_endpoint_id: string;
+}
+
+export interface ModelInfo {
+  status: number;
+  error: string;
 }
