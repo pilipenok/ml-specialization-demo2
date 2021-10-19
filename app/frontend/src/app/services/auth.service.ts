@@ -29,7 +29,7 @@ export class AuthService {
     this.auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         this.userData = userCredential.user;
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl("/datasets");
       });
   }
   

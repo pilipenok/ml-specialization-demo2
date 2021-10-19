@@ -2,7 +2,7 @@
   <div>
     <h1>Datasets</h1>
     <div class="add-btn-container">
-      <a routerLink="/new-dataset" class="new-dataset-btn">
+      <a routerLink="/datasets-new" class="new-dataset-btn">
         <button mat-fab><mat-icon>add</mat-icon></button>
       </a>
     </div>
@@ -15,7 +15,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"><a [routerLink]="['/dataset', element.id]"> {{element.name}} </a></td>
+      <td mat-cell *matCellDef="let element"><a [routerLink]="['/datasets', element.id]"> {{element.name}} </a></td>
     </ng-container>
     <!-- Description Column -->
     <ng-container matColumnDef="description">

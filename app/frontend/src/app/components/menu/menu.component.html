@@ -1,11 +1,11 @@
 <div *ngIf="authService.isSignedIn()" >
-  <a routerLink="/">
+  <a routerLink="/datasets" routerLinkActive="active">
     <button mat-menu-item>
       <mat-icon>list</mat-icon>
       <span>Datasets</span>
     </button>
   </a>
-  <a routerLink="/model">
+  <a routerLink="/model" routerLinkActive="active">
     <button mat-menu-item>
       <mat-icon>api</mat-icon>
       <span>Model</span>

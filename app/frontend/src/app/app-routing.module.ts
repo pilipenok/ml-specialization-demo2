@@ -17,9 +17,10 @@ import { AuthGuard } from './guard/auth.guard';
 import { LoginPageGuard } from './guard/login-page.guard';
 
 const routes: Routes = [
-      {path: '', component: DatasetListComponent, canActivate: [AuthGuard]},
-      {path: 'dataset/:datasetId', component: DatasetDetailsComponent, canActivate: [AuthGuard]},
-      {path: 'new-dataset', component: NewDatasetComponent, canActivate: [AuthGuard]},
+      {path: '', redirectTo: '/datasets', pathMatch: 'full'},
+      {path: 'datasets', component: DatasetListComponent, canActivate: [AuthGuard]},
+      {path: 'datasets/:datasetId', component: DatasetDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'datasets-new', component: NewDatasetComponent, canActivate: [AuthGuard]},
       {path: 'model', component: ModelComponent, canActivate: [AuthGuard]},
       {path: 'login', component: LoginComponent, canActivate: [LoginPageGuard]}
 ];
