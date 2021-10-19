@@ -8,7 +8,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
+import { DatasetDaoService, Dataset, User } from '../../services/dataset-dao.service';
 import { Observable } from 'rxjs';
 import { DeleteDatasetDialogComponent } from '../delete-dataset-dialog/delete-dataset-dialog.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -21,14 +21,25 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class DatasetListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'description', 'filename', 'type', 'size',
+  displayedColumns: string[] = ['position', 'name', 'description', 'filename', 'type', 'size',
                                 'creation_timestamp', 'status', 'actions'];
 
   datasets!: Observable<Dataset[]>;
+  modelStatus: number | undefined = 0;
+  modelError: string | undefined;
 
   constructor(private dao: DatasetDaoService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    let userData = this.dao.getUserData();
+    userData.subscribe(
+          (value:User | undefined) => {
+            this.modelStatus = value?.model_state?.status;
+            this.modelError = value?.model_state?.error;
+          },
+          (error) => {
+            console.log(error);
+          });
     this.datasets = this.dao.getDatasets();
   }
 

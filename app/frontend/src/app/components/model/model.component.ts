@@ -6,9 +6,10 @@
  * from EPAM Systems, Inc
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { PredictionsService, Row } from '../../services/predictions.service';
+import { DatasetDaoService, User } from '../../services/dataset-dao.service';
 
 interface Item {
   value: string;
@@ -17,18 +18,25 @@ interface Item {
 interface ItemShort {
   value: string;
 }
+interface ItemNumber {
+  value: number;
+  viewValue: string;
+}
+interface ItemNumberShort {
+  value: number;
+}
 
 @Component({
   selector: 'app-model',
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.css']
 })
-export class ModelComponent {
+export class ModelComponent implements OnInit {
 
   selectedGender!: string;
   selectedAge!: string;
-  selectedMaritalStatus!: string;
-  selectedOccupation!: string;
+  selectedMaritalStatus!: number;
+  selectedOccupation!: number;
   selectedCityCategory!: string;
   selectedStayInCity!: string;
 
@@ -37,12 +45,27 @@ export class ModelComponent {
 
   displayedColumns: string[] = ['position', 'item', 'prediction'];
   dataSource: Row[] | null = null;
+  modelStatus!: number | undefined;
+  modelError: string | undefined;
 
-  constructor(private predictionsService: PredictionsService) { }
+  constructor(private predictionsService: PredictionsService, private dao: DatasetDaoService) { }
+
+  ngOnInit(): void {
+    let userData = this.dao.getUserData();
+    userData.subscribe(
+          (value:User | undefined) => {
+            this.modelStatus = value?.model_state?.status;
+            this.modelError = value?.model_state?.error;
+          },
+          (error) => {
+            console.log(error);
+          });
+  }
 
   onSubmit(): void {
-    if (!this.selectedGender || !this.selectedAge || !this.selectedMaritalStatus
-        || !this.selectedOccupation || !this.selectedCityCategory || !this.selectedStayInCity) {
+    if (this.selectedGender == undefined || this.selectedAge == undefined
+        || this.selectedMaritalStatus == undefined || this.selectedOccupation == undefined
+        || this.selectedCityCategory == undefined || this.selectedStayInCity == undefined) {
       return;
     }
     this.queryInProgress = true;
@@ -77,33 +100,33 @@ export class ModelComponent {
     {value: '55+'},
   ];
 
-  maritalStatusList: Item[] = [
-    {value: '0', viewValue: 'Single'},
-    {value: '1', viewValue: 'Married'},
+  maritalStatusList: ItemNumber[] = [
+    {value: 0, viewValue: 'Single'},
+    {value: 1, viewValue: 'Married'},
   ];
 
-  occupationList: ItemShort[] = [
-    {value: '0'},
-    {value: '1'},
-    {value: '2'},
-    {value: '3'},
-    {value: '4'},
-    {value: '5'},
-    {value: '6'},
-    {value: '7'},
-    {value: '8'},
-    {value: '9'},
-    {value: '10'},
-    {value: '11'},
-    {value: '12'},
-    {value: '13'},
-    {value: '14'},
-    {value: '15'},
-    {value: '16'},
-    {value: '17'},
-    {value: '18'},
-    {value: '19'},
-    {value: '20'},
+  occupationList: ItemNumberShort[] = [
+    {value: 0},
+    {value: 1},
+    {value: 2},
+    {value: 3},
+    {value: 4},
+    {value: 5},
+    {value: 6},
+    {value: 7},
+    {value: 8},
+    {value: 9},
+    {value: 10},
+    {value: 11},
+    {value: 12},
+    {value: 13},
+    {value: 14},
+    {value: 15},
+    {value: 16},
+    {value: 17},
+    {value: 18},
+    {value: 19},
+    {value: 20},
   ];
 
   cityCategoryList: ItemShort[] = [

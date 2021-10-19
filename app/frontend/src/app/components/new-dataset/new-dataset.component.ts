@@ -8,7 +8,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { DatasetDaoService } from '../../services/dataset-dao.service';
+import { DatasetDaoService, User } from '../../services/dataset-dao.service';
 import { StorageService } from '../../services/storage.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularFireUploadTask } from '@angular/fire/compat/storage';
@@ -64,30 +64,29 @@ export class NewDatasetComponent implements OnInit {
     this.fileLocation = file.name;
     this.file = file;
     this.uploadFile(file, () => {
-      this.createDataset();
+      const datasetId: string = this.dao.generateId();
+      this.dao.createDataset(
+                      datasetId,
+                      this.name.value,
+                      this.description.value,
+                      this.file.name,
+                      this.file.type,
+                      this.file.size);
+      this.dao.resetModelState();
       this.doneStep.select();
       this.step1.editable = false;
       this.step2.editable = false;
     });
   }
-  
-  createDataset(): void {
-    const datasetId: string = this.dao.generateId();
-    this.dao.createDataset(
-                datasetId,
-                this.name.value,
-                this.description.value,
-                this.file.name,
-                this.file.type,
-                this.file.size);
-  }
 
   uploadFile(file: any, onSuccess: () => void): void {
+    let uploadComplete: boolean = false;
     if (file && this.auth.isSignedIn()) {
       const task = this.storage.uploadFile(file, this.auth.getUserId() + '/dataset.csv');
       this.uploadPercent = task.percentageChanges();
       this.uploadPercent.subscribe(val => {
-        if (val == 100) {
+        if (val == 100 && !uploadComplete) {
+          uploadComplete = true;
           this.fileUploadResult.setValue("done");
           onSuccess();
         }
