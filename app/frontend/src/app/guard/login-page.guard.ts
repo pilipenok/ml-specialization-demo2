@@ -26,6 +26,6 @@ export class LoginPageGuard implements CanActivate {
     if (!this.authService.isSignedIn()) {
       return true;
     }
-    return this.router.parseUrl('/');
+    return this.router.parseUrl('/datasets');
   }
 }
