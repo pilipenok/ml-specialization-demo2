@@ -65,9 +65,7 @@ def create_pipeline(
     #_evaluator = pc.evaluator(examples=examples, model=model, baseline_model=baseline_model)
     #model_blessing = _evaluator.outputs['blessing']
 
-    # TODO: uncomment for tfx>1.3.0
-    # pusher = pc.pusher_vertex if enable_vertex else pc.pusher
-    pusher = pc.pusher
+    pusher = pc.pusher_vertex if enable_vertex else pc.pusher
     _pusher = pusher(model=model,
                      #model_blessing=model_blessing
                      )
@@ -83,7 +81,7 @@ def create_pipeline(
         _trainer,
         #_model_resolver,
         #_evaluator,
-        #_pusher,
+        _pusher,
         _finish
     ]
 
