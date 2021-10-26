@@ -17,7 +17,7 @@ def main():
     print(f'Compiling to {PIPELINE_DEFINITION_FILE}')
     runner_config = KubeflowV2DagRunnerConfig(
         display_name=f'tfx-vertex-pipeline-{PIPELINE_NAME}',
-        default_image=f'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/{PIPELINE_NAME}-vertex',
+        default_image=configs.PIPELINE_IMAGE,
     )
 
     KubeflowV2DagRunner(
