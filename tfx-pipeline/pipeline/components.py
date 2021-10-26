@@ -197,8 +197,7 @@ def pusher_vertex(
         custom_config={
             ENABLE_VERTEX_KEY: True,
             VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
-            VERTEX_CONTAINER_IMAGE_URI_KEY: 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-5:latest',
-            # See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
+            VERTEX_CONTAINER_IMAGE_URI_KEY: configs.VERTEX_IMAGE,
             ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_VERTEX_SERVING_ARGS
         }
     )

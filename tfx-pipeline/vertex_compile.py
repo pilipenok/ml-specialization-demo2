@@ -16,8 +16,8 @@ GS_MODEL_URI = configs.MODULE_FILE
 def main():
     print(f'Compiling to {PIPELINE_DEFINITION_FILE}')
     runner_config = KubeflowV2DagRunnerConfig(
-        display_name='tfx-vertex-pipeline-{}'.format(PIPELINE_NAME),
-        default_image='us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/black-friday-pipeline-vertex',
+        display_name=f'tfx-vertex-pipeline-{PIPELINE_NAME}',
+        default_image=configs.PIPELINE_IMAGE,
     )
 
     KubeflowV2DagRunner(

@@ -18,7 +18,10 @@ LOCAL_DATA_PATH = '.'
 # Pipelines used.
 # This image will be automatically built by CLI if we use --build-image flag.
 # PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
-PIPELINE_IMAGE = 'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/taxi-pipeline-vertex'
+PIPELINE_IMAGE = f'us.gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}-vertex'
+
+# See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
+VERTEX_IMAGE = 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-6:latest'
 
 PREPROCESSING_FN = 'models.preprocessing.preprocessing_fn'
 RUN_FN = 'models.baseline.model.run_fn'
@@ -53,7 +56,7 @@ GCP_AI_PLATFORM_TRAINING_ARGS = {
 # Cloud AI Platform. For the full set of parameters supported by Google Cloud AI
 # Platform, refer to https://cloud.google.com/ml-engine/reference/rest/v1/projects.models
 GCP_VERTEX_SERVING_ARGS = {
-    'model_name': MODEL_NAME,
+    # 'model_name': MODEL_NAME,
     'project_id': GOOGLE_CLOUD_PROJECT,
     # The region to use when serving the model. See available regions here:
     # https://cloud.google.com/ml-engine/docs/regions
@@ -117,7 +120,7 @@ GCP_VERTEX_AI_TRAINING_ARGS = {
         'machine_spec': {'machine_type': 'n1-standard-4', },
         'replica_count': 1,
         'container_spec': {
-            'image_uri': 'us.gcr.io/or2--epm-gcp-by-meetup2-t1iylu/taxi-pipeline-vertex',
+            'image_uri': PIPELINE_IMAGE,
         },
     }],
 }
