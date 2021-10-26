@@ -71,7 +71,7 @@ def create_pipeline(
                      )
 
     _finish = pc.finish_pubsub_event(topic=configs.pubsub_deploy_topic, project=configs.GOOGLE_CLOUD_PROJECT)
-    _finish.add_upstream_node(_trainer)
+    _finish.add_upstream_node(_pusher)
     
     components = [
         _example_gen,
