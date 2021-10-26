@@ -18,7 +18,7 @@ LOCAL_DATA_PATH = '.'
 # Pipelines used.
 # This image will be automatically built by CLI if we use --build-image flag.
 # PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}'
-PIPELINE_IMAGE = f'us.gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}-vertex'
+PIPELINE_IMAGE = f'gcr.io/{GOOGLE_CLOUD_PROJECT}/{PIPELINE_NAME}-vertex'
 
 # See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
 VERTEX_IMAGE = 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-6:latest'
