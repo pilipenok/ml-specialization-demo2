@@ -20,6 +20,13 @@ steps:
     volumes:
       - name: ssh
         path: /root/.ssh
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+        'build',
+        '--tag',
+        'gcr.io/${PROJECT_ID}/tfx-pipeline-ml-demo2-black-friday-vertex',
+        '.'
+    ]
   - name: 'python:3.7-slim'
     args:
       - '-c'
@@ -30,6 +37,7 @@ steps:
         python vertex_run.py'
     entrypoint: /bin/sh
     timeout: 3600s
+images: ['gcr.io/${PROJECT_ID}/tfx-pipeline-ml-demo2-black-friday-vertex']
 timeout: 3600s
 availableSecrets:
   secretManager:
