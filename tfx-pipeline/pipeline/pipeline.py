@@ -79,8 +79,10 @@ def create_pipeline(
         _schema_gen,
         _example_validator,
         _trainer,
+
         #_model_resolver,
         #_evaluator,
+
         _pusher,
         _finish
     ]

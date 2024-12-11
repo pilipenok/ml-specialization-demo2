@@ -10,7 +10,7 @@ from tfx.extensions.google_cloud_ai_platform.trainer import executor as ai_platf
 from tfx.extensions.google_cloud_ai_platform.pusher import executor as ai_platform_pusher_executor
 from tfx.extensions.google_cloud_ai_platform.trainer.executor import ENABLE_VERTEX_KEY, VERTEX_REGION_KEY, \
     TRAINING_ARGS_KEY
-from tfx.extensions.google_cloud_ai_platform.pusher.executor import VERTEX_CONTAINER_IMAGE_URI_KEY
+# from tfx.extensions.google_cloud_ai_platform.pusher.executor import VERTEX_CONTAINER_IMAGE_URI_KEY
 from tfx.extensions.google_cloud_ai_platform.tuner.executor import TUNING_ARGS_KEY
 
 from tfx import types
@@ -178,7 +178,7 @@ def pusher(
         model=model,
         custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
         custom_config={
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_CAIP_SERVING_ARGS
+#            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_CAIP_SERVING_ARGS
         }
     )
     if model_blessing:
@@ -187,19 +187,43 @@ def pusher(
     return tfx.components.Pusher(**args).with_id("Pusher")
 
 
+# def pusher_vertex(
+#         model: types.Channel,
+#         model_blessing: Optional[types.Channel] = None
+# ):
+#     args = dict(
+#         model=model,
+#         custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
+#         custom_config={
+#             ENABLE_VERTEX_KEY: True,
+#             VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
+#             VERTEX_CONTAINER_IMAGE_URI_KEY: configs.VERTEX_IMAGE,
+#             ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_VERTEX_SERVING_ARGS
+#         }
+#     )
+#     if model_blessing:
+#         args.update(model_blessing=model_blessing)
+#
+#     return tfx.components.Pusher(**args).with_id("PusherVertexAI")
+
 def pusher_vertex(
-        model: types.Channel,
-        model_blessing: Optional[types.Channel] = None
+    model: types.Channel,
+    model_blessing: Optional[types.Channel] = None
 ):
     args = dict(
         model=model,
-        custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
-        custom_config={
-            ENABLE_VERTEX_KEY: True,
-            VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
-            VERTEX_CONTAINER_IMAGE_URI_KEY: configs.VERTEX_IMAGE,
-            ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_VERTEX_SERVING_ARGS
-        }
+        push_destination=tfx.proto.PushDestination(
+            filesystem=tfx.proto.PushDestination.Filesystem(
+                base_directory=configs.SERVING_MODEL_DIR))
+
+        # custom_executor_spec=executor_spec.ExecutorClassSpec(ai_platform_pusher_executor.Executor),
+        # custom_config={
+        #     ENABLE_VERTEX_KEY: True,
+        #     VERTEX_REGION_KEY: configs.GOOGLE_CLOUD_REGION,
+        #     VERTEX_CONTAINER_IMAGE_URI_KEY: 'us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-6:latest',
+        #     # See here https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers
+        #     ai_platform_pusher_executor.SERVING_ARGS_KEY: configs.GCP_VERTEX_SERVING_ARGS
+        # }
     )
     if model_blessing:
         args.update(model_blessing=model_blessing)
