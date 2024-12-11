@@ -46,7 +46,7 @@ def run():
             metadata_connection_config=metadata.sqlite_metadata_connection_config(METADATA_PATH),
             enable_vertex=False,
             enable_transform=False,
-            enable_hyperparameters_tuning=True
+            enable_hyperparameters_tuning=False
         )
     )
 
