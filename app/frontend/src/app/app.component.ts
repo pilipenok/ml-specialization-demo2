@@ -8,11 +8,22 @@
 
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import {RouterModule, RouterOutlet} from "@angular/router";
+import {MenuComponent} from "./components/menu/menu.component";
+import {TopBarComponent} from "./components/top-bar/top-bar.component";
+import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    standalone: true,
+    styleUrls: ['./app.component.css'],
+    imports:[
+      RouterOutlet,
+      MenuComponent,
+      TopBarComponent,
+      CommonModule,
+    ]
 })
 export class AppComponent {
   title = 'frontend';

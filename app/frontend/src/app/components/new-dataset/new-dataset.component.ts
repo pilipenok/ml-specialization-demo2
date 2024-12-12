@@ -10,18 +10,31 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { DatasetDaoService, User } from '../../services/dataset-dao.service';
 import { StorageService } from '../../services/storage.service';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import {FormControl, Validators, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { AngularFireUploadTask } from '@angular/fire/compat/storage';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatStep } from '@angular/material/stepper';
+import {MatProgressBar, MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatStep, MatStepperModule} from '@angular/material/stepper';
 import { Observable } from 'rxjs';
+import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import {CommonModule} from "@angular/common";
+import {MatCard} from "@angular/material/card";
+import {MatTab} from "@angular/material/tabs";
 
 
 @Component({
   selector: 'app-new-dataset',
   templateUrl: './new-dataset.component.html',
   styleUrls: ['./new-dataset.component.css'],
-  providers: [ DatasetDaoService ]
+  standalone: true,
+  providers: [DatasetDaoService],
+  imports:[
+    MatStepperModule,
+    MatProgressBarModule,
+    MatLabel,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    CommonModule
+  ]
 })
 export class NewDatasetComponent implements OnInit {
 
@@ -67,8 +80,8 @@ export class NewDatasetComponent implements OnInit {
       const datasetId: string = this.dao.generateId();
       this.dao.createDataset(
                       datasetId,
-                      this.name.value,
-                      this.description.value,
+                      this.name.value ?? "",
+                      this.description.value ?? "",
                       this.file.name,
                       this.file.type,
                       this.file.size);

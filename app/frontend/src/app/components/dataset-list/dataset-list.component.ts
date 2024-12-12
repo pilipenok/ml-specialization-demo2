@@ -12,12 +12,24 @@ import { DatasetDaoService, Dataset, User } from '../../services/dataset-dao.ser
 import { Observable } from 'rxjs';
 import { DeleteDatasetDialogComponent } from '../delete-dataset-dialog/delete-dataset-dialog.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatIcon} from "@angular/material/icon";
+import {MatCell, MatTable} from "@angular/material/table";
+import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @Component({
   selector: 'app-dataset-list',
   templateUrl: './dataset-list.component.html',
   styleUrls: ['./dataset-list.component.css'],
-  providers: [ DatasetDaoService ]
+  providers: [ DatasetDaoService ],
+  standalone: true,
+  imports: [
+    MatIcon,
+    MatCell,
+    CommonModule,
+    RouterModule,
+    MatTable
+  ]
 })
 export class DatasetListComponent implements OnInit {
 

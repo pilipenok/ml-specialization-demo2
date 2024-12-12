@@ -7,9 +7,25 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardFooter,
+  MatCardModule,
+  MatCardTitle
+} from '@angular/material/card';
 import { PredictionsService, Row } from '../../services/predictions.service';
 import { DatasetDaoService, User } from '../../services/dataset-dao.service';
+import {MatTable} from "@angular/material/table";
+import {MatProgressBar} from "@angular/material/progress-bar";
+import {MatOption} from "@angular/material/autocomplete";
+import {MatError, MatFormField, MatSelect} from "@angular/material/select";
+import {MatLabel} from "@angular/material/form-field";
+import {FormsModule} from "@angular/forms";
+import {MatIcon} from "@angular/material/icon";
+import {MatInput} from "@angular/material/input";
+import {CommonModule} from "@angular/common";
 
 interface Item {
   value: string;
@@ -29,7 +45,23 @@ interface ItemNumberShort {
 @Component({
   selector: 'app-model',
   templateUrl: './model.component.html',
-  styleUrls: ['./model.component.css']
+  styleUrls: ['./model.component.css'],
+  standalone: true,
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatCardTitle,
+    MatTable,
+    MatProgressBar,
+    MatCardFooter,
+    MatCardActions,
+    MatOption,
+    MatSelect,
+    MatLabel,
+    MatFormField,
+    FormsModule,
+    CommonModule
+  ]
 })
 export class ModelComponent implements OnInit {
 
@@ -44,7 +76,7 @@ export class ModelComponent implements OnInit {
   queryInProgress: boolean = false;
 
   displayedColumns: string[] = ['position', 'item', 'prediction'];
-  dataSource: Row[] | null = null;
+  dataSource: Row[] = [];
   modelStatus!: number | undefined;
   modelError: string | undefined;
 
@@ -69,7 +101,7 @@ export class ModelComponent implements OnInit {
       return;
     }
     this.queryInProgress = true;
-    this.dataSource = null;
+    this.dataSource = [];
     this.requestError = null;
     this.predictionsService.getPrediction(this.selectedGender, this.selectedAge,
                   this.selectedMaritalStatus, this.selectedOccupation,

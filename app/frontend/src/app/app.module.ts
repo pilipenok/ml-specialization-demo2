@@ -50,17 +50,9 @@ import { ModelComponent } from './components/model/model.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DatasetListComponent,
-    NewDatasetComponent,
-    LoginComponent,
-    TopBarComponent,
-    DatasetDetailsComponent,
-    DeleteDatasetDialogComponent,
-    MenuComponent,
-    ModelComponent,
   ],
   imports: [
+    AppComponent,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -84,7 +76,15 @@ import { ModelComponent } from './components/model/model.component';
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireFunctionsModule
+    AngularFireFunctionsModule,
+    NewDatasetComponent,
+    TopBarComponent,
+    ModelComponent,
+    MenuComponent,
+    DeleteDatasetDialogComponent,
+    DatasetDetailsComponent,
+    LoginComponent,
+    DatasetListComponent
   ],
   providers: [
     { provide: BUCKET, useValue: 'epm-spec-black-friday' },

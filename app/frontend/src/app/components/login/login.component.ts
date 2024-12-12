@@ -7,17 +7,35 @@
  */
 
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { FormControl, Validators } from '@angular/forms';
+import {MatCard, MatCardModule} from '@angular/material/card';
+import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import {MatError, MatFormField} from "@angular/material/select";
+import {MatInput} from "@angular/material/input";
+import {MatLabel} from "@angular/material/form-field";
+import {MatIcon} from "@angular/material/icon";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  standalone: true,
+  imports: [
+    MatError,
+    MatInput,
+    MatLabel,
+    MatFormField,
+    MatCard,
+    MatIcon,
+    FormsModule,
+    ReactiveFormsModule,
+    MatError,
+    CommonModule
+  ]
 })
 export class LoginComponent {
- 
+
   constructor(public authService: AuthService) { }
 
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -31,7 +49,7 @@ export class LoginComponent {
 
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
-  
+
   getPasswordErrorMessage() {
     if (this.password.hasError('required')) {
       return 'You must enter a value';
@@ -39,10 +57,10 @@ export class LoginComponent {
 
     return '';
   }
-  
+
   onSubmit() {
     if (this.email.errors == null && this.password.errors == null) {
-      this.authService.signIn(this.email.value, this.password.value);
+      this.authService.signIn(this.email.value ?? "", this.password.value ?? "");
     }
   }
 }

@@ -9,11 +9,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.css']
+  styleUrls: ['./top-bar.component.css'],
+  standalone: true,
+  imports: [
+    MatIconModule,
+    CommonModule,
+  ]
 })
 export class TopBarComponent {
 

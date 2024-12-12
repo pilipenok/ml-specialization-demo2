@@ -7,17 +7,25 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
+import {MatTab, MatTabGroup, MatTabsModule} from '@angular/material/tabs';
+import {MatCard, MatCardModule} from '@angular/material/card';
 import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
 import { ActivatedRoute} from '@angular/router';
 import { Observable } from 'rxjs';
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-dataset-details',
   templateUrl: './dataset-details.component.html',
   styleUrls: ['./dataset-details.component.css'],
-  providers: [ DatasetDaoService ]
+  providers: [ DatasetDaoService ],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCard,
+    MatTab,
+    MatTabGroup
+  ]
 })
 export class DatasetDetailsComponent implements OnInit {
 
