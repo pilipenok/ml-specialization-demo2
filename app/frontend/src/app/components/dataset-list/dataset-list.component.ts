@@ -13,22 +13,41 @@ import { Observable } from 'rxjs';
 import { DeleteDatasetDialogComponent } from '../delete-dataset-dialog/delete-dataset-dialog.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MatIcon} from "@angular/material/icon";
-import {MatCell, MatTable} from "@angular/material/table";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
+import {MatFabButton, MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-dataset-list',
   templateUrl: './dataset-list.component.html',
   styleUrls: ['./dataset-list.component.css'],
   providers: [ DatasetDaoService ],
-  standalone: true,
   imports: [
     MatIcon,
     MatCell,
     CommonModule,
     RouterModule,
-    MatTable
+    MatTable,
+    DeleteDatasetDialogComponent,
+    MatFabButton,
+    MatColumnDef,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatIconButton,
+    MatHeaderRow,
+    MatRow,
+    MatHeaderRowDef,
+    MatRowDef,
   ]
 })
 export class DatasetListComponent implements OnInit {

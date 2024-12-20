@@ -19,7 +19,6 @@ import {CommonModule} from "@angular/common";
   templateUrl: './dataset-details.component.html',
   styleUrls: ['./dataset-details.component.css'],
   providers: [ DatasetDaoService ],
-  standalone: true,
   imports: [
     CommonModule,
     MatCard,

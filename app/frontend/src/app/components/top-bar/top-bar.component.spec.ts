@@ -7,16 +7,32 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TopBarComponent } from './top-bar.component';
+import { AuthService } from '../../services/auth.service';
+import { provideRouter } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 describe('TopBarComponent', () => {
   let component: TopBarComponent;
   let fixture: ComponentFixture<TopBarComponent>;
 
   beforeEach(async () => {
+    const authServiceMock = {
+      isSignedIn: jasmine.createSpy('isSignedIn').and.returnValue(true),
+      signOut: jasmine.createSpy('signOut')
+    };
+
     await TestBed.configureTestingModule({
-      declarations: [ TopBarComponent ]
+      imports: [
+        TopBarComponent,
+        MatIconModule,
+        CommonModule
+      ],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        provideRouter([]) // Provide an empty router configuration for testing
+      ]
     })
     .compileComponents();
   });

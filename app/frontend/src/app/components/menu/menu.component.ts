@@ -11,15 +11,19 @@ import { AuthService } from '../../services/auth.service';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
+import {MatMenuItem} from "@angular/material/menu";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
-  standalone: true,
   imports: [
     MatIcon,
-    CommonModule
+    CommonModule,
+    MatMenuItem,
+    RouterLink,
+    RouterLinkActive
   ]
 })
 export class MenuComponent {

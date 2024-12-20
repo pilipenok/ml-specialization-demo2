@@ -1,15 +1,32 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
+import { CommonModule } from '@angular/common';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../environments/environment'; // Adjust the path to your environment file
+import { AuthService } from './services/auth.service'; // Adjust the path as necessary
+import { TopBarComponent } from './components/top-bar/top-bar.component'; // Adjust the path as necessary
+import { MenuComponent } from './components/menu/menu.component'; // Adjust the path as necessary
 
 describe('AppComponent', () => {
   beforeEach(async () => {
+    const authServiceMock = {
+      isSignedIn: jasmine.createSpy('isSignedIn').and.returnValue(true)
+    };
+
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        AppComponent,
+        CommonModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        TopBarComponent, // Import TopBarComponent as it is standalone
+        MenuComponent // Import MenuComponent as it is standalone
       ],
-      declarations: [
-        AppComponent
+      providers: [
+        provideRouter([]), // Provide an empty router configuration for testing
+        { provide: AuthService, useValue: authServiceMock }
       ],
     }).compileComponents();
   });

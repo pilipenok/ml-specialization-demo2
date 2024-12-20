@@ -9,7 +9,7 @@
   </div>
   <table mat-table [dataSource]="datasets" class="mat-elevation-z8">
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Num. </th>
+      <th mat-header-cell *matHeaderCellDef> Num. </th>
       <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
     </ng-container>
     <!-- Name Column -->

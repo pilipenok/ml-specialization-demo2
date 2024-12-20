@@ -7,14 +7,29 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-
 import { AuthGuard } from './auth.guard';
+import { AuthService } from '../services/auth.service';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { provideRouter } from '@angular/router';
+import { environment } from '../../environments/environment'; // Adjust the path to your environment file
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule
+      ],
+      providers: [
+        AuthGuard,
+        AuthService,
+        provideRouter([]) // Provide an empty router configuration for testing
+      ]
+    }).compileComponents();
+
     guard = TestBed.inject(AuthGuard);
   });
 

@@ -7,8 +7,14 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DeleteDatasetDialogComponent } from './delete-dataset-dialog.component';
+import { provideRouter } from '@angular/router';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../../../environments/environment'; // Adjust the path to your environment file
+import { AuthService } from '../../services/auth.service'; // Adjust the path as necessary
 
 describe('DeleteDatasetDialogComponent', () => {
   let component: DeleteDatasetDialogComponent;
@@ -16,7 +22,19 @@ describe('DeleteDatasetDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteDatasetDialogComponent ]
+      imports: [
+        DeleteDatasetDialogComponent,
+        MatDialogModule,
+        CommonModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule
+      ],
+      providers: [
+        provideRouter([]), // Provide an empty router configuration for testing
+        AuthService, // Add any additional services here
+        { provide: MatDialogRef, useValue: {} }, // Provide MatDialogRef
+        { provide: MAT_DIALOG_DATA, useValue: {} } // Provide MAT_DIALOG_DATA if needed
+      ]
     })
     .compileComponents();
   });

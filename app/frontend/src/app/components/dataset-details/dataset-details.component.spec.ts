@@ -7,8 +7,15 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DatasetDetailsComponent } from './dataset-details.component';
+import { provideRouter } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../../../environments/environment'; // Adjust the path to your environment file
+import { AuthService } from '../../services/auth.service'; // Adjust the path as necessary
 
 describe('DatasetDetailsComponent', () => {
   let component: DatasetDetailsComponent;
@@ -16,7 +23,18 @@ describe('DatasetDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DatasetDetailsComponent ]
+      imports: [
+        DatasetDetailsComponent,
+        MatCardModule,
+        CommonModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule,
+        BrowserAnimationsModule // Import BrowserAnimationsModule
+      ],
+      providers: [
+        provideRouter([]), // Provide an empty router configuration for testing
+        AuthService // Add any additional services here
+      ]
     })
     .compileComponents();
   });

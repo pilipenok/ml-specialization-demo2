@@ -7,14 +7,25 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-
 import { StorageService } from './storage.service';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { environment } from '../../environments/environment'; // Adjust the path to your environment file
 
 describe('StorageService', () => {
   let service: StorageService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireStorageModule
+      ],
+      providers: [
+        StorageService
+      ]
+    }).compileComponents();
+
     service = TestBed.inject(StorageService);
   });
 

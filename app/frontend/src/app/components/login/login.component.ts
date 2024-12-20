@@ -15,12 +15,12 @@ import {MatInput} from "@angular/material/input";
 import {MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {CommonModule} from "@angular/common";
+import {MatButton, MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: true,
   imports: [
     MatError,
     MatInput,
@@ -31,7 +31,9 @@ import {CommonModule} from "@angular/common";
     FormsModule,
     ReactiveFormsModule,
     MatError,
-    CommonModule
+    CommonModule,
+    MatIconButton,
+    MatButton
   ]
 })
 export class LoginComponent {

@@ -19,21 +19,26 @@ import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {CommonModule} from "@angular/common";
 import {MatCard} from "@angular/material/card";
 import {MatTab} from "@angular/material/tabs";
+import {MatInput} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
 
 
 @Component({
   selector: 'app-new-dataset',
   templateUrl: './new-dataset.component.html',
   styleUrls: ['./new-dataset.component.css'],
-  standalone: true,
   providers: [DatasetDaoService],
-  imports:[
+  imports: [
     MatStepperModule,
     MatProgressBarModule,
     MatLabel,
     MatFormFieldModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatInput,
+    MatButton,
+    RouterLink
   ]
 })
 export class NewDatasetComponent implements OnInit {

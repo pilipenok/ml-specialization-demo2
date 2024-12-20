@@ -7,15 +7,20 @@
  */
 
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions} from '@angular/material/dialog';
 import { DatasetDaoService, Dataset } from '../../services/dataset-dao.service';
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-delete-dataset-dialog',
   templateUrl: './delete-dataset-dialog.component.html',
   styleUrls: ['./delete-dataset-dialog.component.css'],
-  providers: [ DatasetDaoService ],
-  standalone: true
+  imports: [
+    MatDialogContent,
+    MatButton,
+    MatDialogActions
+  ],
+  providers: [DatasetDaoService]
 })
 export class DeleteDatasetDialogComponent {
 

@@ -24,6 +24,7 @@ Run `ng build` to build the project. The build artifacts (index.html, js and css
 After `ng build` run `firebase deploy` from the app root directory.
 
 ## Deploy on new project
+Use `firebase apps:sdkconfig` to sync settings in src/environments/*
 
 Delete firebase.json and .firebaserc, then initialize Firebase by running `firebase init`, Firestore and Storage must be enabled. Then run `firebase deploy`.
 

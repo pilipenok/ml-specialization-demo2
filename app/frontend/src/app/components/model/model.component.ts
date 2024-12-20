@@ -17,7 +17,15 @@ import {
 } from '@angular/material/card';
 import { PredictionsService, Row } from '../../services/predictions.service';
 import { DatasetDaoService, User } from '../../services/dataset-dao.service';
-import {MatTable} from "@angular/material/table";
+import {
+  MatCell, MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef,
+  MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatError, MatFormField, MatSelect} from "@angular/material/select";
@@ -26,6 +34,7 @@ import {FormsModule} from "@angular/forms";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
+import {MatButton} from "@angular/material/button";
 
 interface Item {
   value: string;
@@ -46,7 +55,6 @@ interface ItemNumberShort {
   selector: 'app-model',
   templateUrl: './model.component.html',
   styleUrls: ['./model.component.css'],
-  standalone: true,
   imports: [
     MatCard,
     MatCardContent,
@@ -60,7 +68,17 @@ interface ItemNumberShort {
     MatLabel,
     MatFormField,
     FormsModule,
-    CommonModule
+    CommonModule,
+    MatRow,
+    MatHeaderRow,
+    MatCell,
+    MatHeaderCell,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatButton,
+    MatHeaderRowDef,
+    MatRowDef
   ]
 })
 export class ModelComponent implements OnInit {
